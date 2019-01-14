@@ -5,11 +5,16 @@
  */
 package diseñosoftware.vistas;
 
+import java.util.Optional;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -29,7 +34,6 @@ public class Vista {
 
     TextField tname = new TextField();
     TextField tcontra = new TextField();
-    String name = "";
     int c=0;
     protected Scene scene;
     protected int tamañoVentana;
@@ -41,7 +45,6 @@ public class Vista {
         this.scene = new Scene(menu, 1000, 600);
         this.tamañoVentana = tamañoVentana;
         this.titulo = titulo;
-        this.CreateLogin();
         this.setFondo(menu);
 
     }
@@ -75,18 +78,15 @@ public class Vista {
         pane.getChildren().add(login);
         this.setFondo(pane);
         scene.setRoot(pane);
-         c++;
-        if (name.equals("") || c!=1) {
-            name = tname.getText();
-        }
         blogin.setOnAction(BLoginEH());
     }
 
     //Método utilizado como prueba para ver el menú de cada rol
-    public Vista VerificarUsu(String name) {
-        System.out.println(name);
-        Vista vista = new AdministradorVista(50, "AV");
-        switch (name) {
+    public Vista VerificarUsu() {
+        System.out.println("Estoy aqui"+tname.getText());
+        //Vista vista = new AdministradorVista(50, "AV");
+        Vista vista=new Vista(50,"AV");
+        switch (tname.getText()) {
             case "a":
                 AdministradorVista av = new AdministradorVista(50, "AV");
                 vista = av;
@@ -111,7 +111,7 @@ public class Vista {
         EventHandler<ActionEvent> EH = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Vista vista = VerificarUsu(name);
+                Vista vista = VerificarUsu();
                 Button cerrar = new Button("Cerrar Sesión");
                 cerrar.getStylesheets().add(constantes.PathStyles);
                 HBox general = new HBox();
@@ -138,8 +138,6 @@ public class Vista {
     }
 
     public void CreateScene() {
-
-        this.CreateScene();
     }
 
     protected void setFondo(StackPane root) {
@@ -148,4 +146,23 @@ public class Vista {
                 + "    -fx-background-size:" + scene.getWidth() + " " + scene.getHeight() + ";\n"
                 + "    -fx-background-position: center center;");
     }
+    public static EventHandler<ActionEvent>  Notificacion(String tipo, String elemento){
+        EventHandler<ActionEvent> EH=new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Cuadro de confirmación");
+                alert.setHeaderText("");
+                alert.setContentText("¿Está seguro que desea "+tipo+" el "+elemento+"?");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK){
+                    // ... user chose OK
+                } else {
+                    // ... user chose CANCEL or closed the dialog
+                }
+                }
+        };
+        return EH;     
+    }
 }
+

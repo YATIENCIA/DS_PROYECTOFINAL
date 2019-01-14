@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package diseñosoftware.vistas;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -27,6 +29,9 @@ import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import modelos.Productos;
+import modelos.Usuarios;
+import recursos.constantes;
 
 /**
  *
@@ -56,6 +61,8 @@ public class AdministradorVista extends Vista{
         tab_au.setContent(AdminUsu);
         tab_ap.setContent(AdminProductos);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        tabPane.getStylesheets().add(constantes.PathStyles);
+        menu.setAlignment(Pos.CENTER);
         menu.getChildren().add(tabPane);   
     }
     
@@ -79,7 +86,15 @@ public class AdministradorVista extends Vista{
         cm.getItems().add(mi1);
         MenuItem mi2 = new MenuItem("Eliminar");
         cm.getItems().add(mi2);
-
+        mi1.setOnAction(Notificacion("modificar", "usuario"));
+        mi2.setOnAction(Notificacion("eliminar", "usuario"));
+        
+        //Creo filas modelo
+        ObservableList<Usuarios> usuarios = FXCollections.observableArrayList(
+            new Usuarios("David", "Vendedor"),
+            new Usuarios("Kira", "Comprador"));
+        table.setItems(usuarios);
+        
         table.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
             @Override
@@ -99,7 +114,7 @@ public class AdministradorVista extends Vista{
         //CRUD sobre usuarios y producto
           VBox v=new VBox();
 
-        TableView table = new TableView();
+        TableView<Productos> table = new TableView();
         table.setEditable(true);
 
         TableColumn firstNameCol = new TableColumn("Productos");
@@ -114,6 +129,15 @@ public class AdministradorVista extends Vista{
         cm.getItems().add(mi1);
         MenuItem mi2 = new MenuItem("Eliminar");
         cm.getItems().add(mi2);
+        
+        mi1.setOnAction(Notificacion("modificar", "producto"));
+        mi2.setOnAction(Notificacion("eliminar", "producto"));
+        
+         //Creo filas modelo
+        ObservableList<Productos> productos = FXCollections.observableArrayList(
+            new Productos("Cuaderno", "Azul universitario", "10.99"),
+            new Productos("Cuaderno", "Verde universitario", "4.99"));
+        table.setItems(productos);
 
         table.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
@@ -128,4 +152,5 @@ public class AdministradorVista extends Vista{
         AdminProductos.getChildren().add(v);
         
     }
+      
 }

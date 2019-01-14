@@ -5,6 +5,8 @@
  */
 package diseñosoftware.vistas;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -18,6 +20,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import modelos.Ventas;
+import recursos.constantes;
 
 /**
  *
@@ -51,6 +55,7 @@ public class CompradorVista extends Vista{
         tab_cp.setContent(ComprasPend);
         tab_mb.setContent(MasBuscados);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        tabPane.getStylesheets().add(constantes.PathStyles);
         menu.getChildren().add(tabPane);
         
     }
@@ -123,7 +128,7 @@ Finalmente, cuando el vendedor llega con el producto pedido, el comprador debe i
 recibió el producto, caso contrario el vendedor no le entregará dicho producto y venta se anula./*
          
          */
-        TableView table = new TableView();
+        TableView<Ventas> table = new TableView();
         table.setEditable(true);
 
         TableColumn firstNameCol = new TableColumn("Pedidos");
@@ -134,7 +139,11 @@ recibió el producto, caso contrario el vendedor no le entregará dicho producto
         Button bbuscar=new Button("Ver historial de pedido");
         v.getChildren().addAll(bbuscar, table);
         ComprasPend.getChildren().add(v);
-
+        
+        ObservableList<Ventas> ventas = FXCollections.observableArrayList(
+            new Ventas("10112", "Lapiceros", "10/02/19"),
+            new Ventas("10113", "Plantas", "1/02/19"));
+        table.setItems(ventas);
     }
      
     public EventHandler<ActionEvent> EHHistorial(){

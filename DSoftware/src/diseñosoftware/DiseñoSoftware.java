@@ -23,6 +23,7 @@ public class DiseñoSoftware extends Application{
     @Override
     public void start(Stage stage) throws Exception {
         Vista vista=new Vista(500, "Test");
+        vista.CreateLogin();
         stage.setScene(vista.getScene());
         stage.setHeight(650);
         stage.setWidth(1000);
