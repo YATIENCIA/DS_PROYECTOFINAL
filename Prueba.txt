@@ -1,0 +1,6 @@
+EL programa puede ser revisado con sus diferentes roles 
+colocando la letra correspondientes en el espacio de nombre de usuario, 
+no es necesario colocar contraseña:
+administrador:"a"
+vendedor:"v"
+comprador:"c"
