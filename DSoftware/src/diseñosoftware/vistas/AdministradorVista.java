@@ -6,32 +6,25 @@
 package diseñosoftware.vistas;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import modelos.Productos;
 import modelos.Usuarios;
-import recursos.constantes;
+
 
 /**
  *
@@ -39,8 +32,8 @@ import recursos.constantes;
  */
 public class AdministradorVista extends Vista{
 
-    Pane AdminUsu=new Pane();
-    Pane AdminProductos=new Pane();
+    BorderPane AdminUsu=new BorderPane();
+    BorderPane AdminProductos=new BorderPane();
     
     public AdministradorVista(int tamañoVentana, String titulo) {
         super(tamañoVentana, titulo);
@@ -61,9 +54,10 @@ public class AdministradorVista extends Vista{
         tab_au.setContent(AdminUsu);
         tab_ap.setContent(AdminProductos);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-        tabPane.getStylesheets().add(constantes.PathStyles);
+        
         menu.setAlignment(Pos.CENTER);
         menu.getChildren().add(tabPane);   
+        
     }
     
     public void CrearAdministrarUsuarios()
@@ -104,8 +98,10 @@ public class AdministradorVista extends Vista{
                 }
             }
         });
-        
-        AdminUsu.getChildren().add(v);
+//        v.setSpacing(20);
+        v.setAlignment(Pos.CENTER);
+        AdminUsu.setCenter(v);
+      
         
     }
     
@@ -148,8 +144,9 @@ public class AdministradorVista extends Vista{
                 }
             }
         });
-        
-        AdminProductos.getChildren().add(v);
+        v.setSpacing(20);
+        v.setAlignment(Pos.CENTER);
+        AdminProductos.setCenter(v);
         
     }
       

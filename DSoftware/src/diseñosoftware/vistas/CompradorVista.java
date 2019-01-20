@@ -12,16 +12,17 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import modelos.Ventas;
-import recursos.constantes;
 
 /**
  *
@@ -30,9 +31,10 @@ import recursos.constantes;
 public class CompradorVista extends Vista{
 
     TabPane tabPane = new TabPane();
-    Pane Busqueda=new Pane();
-    Pane ComprasPend=new Pane();
-    Pane MasBuscados=new Pane();
+    BorderPane Busqueda=new BorderPane();
+    BorderPane ComprasPend=new BorderPane();
+    BorderPane MasBuscados=new BorderPane();
+    
     public CompradorVista(int tamañoVentana, String titulo) {
         super(tamañoVentana, titulo);
 
@@ -55,7 +57,7 @@ public class CompradorVista extends Vista{
         tab_cp.setContent(ComprasPend);
         tab_mb.setContent(MasBuscados);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-        tabPane.getStylesheets().add(constantes.PathStyles);
+
         menu.getChildren().add(tabPane);
         
     }
@@ -71,6 +73,8 @@ public class CompradorVista extends Vista{
         TextField tfdesc=new TextField();
         h.getChildren().addAll(lbuscar, tfnombre);
         h2.getChildren().addAll(ldesc, tfdesc);
+        h.setAlignment(Pos.CENTER);
+        h2.setAlignment(Pos.CENTER);
         v.getChildren().addAll(h,h2,bbuscar);
         
         /*Cada artículo mostrado debe tener nombre, categoría, precio, tiempo máximo de entrega y
@@ -79,7 +83,9 @@ deberá permitir comprar dicho artículo./*
         
         */
         bbuscar.setOnAction(EHBuscarProducto(v));
-        Busqueda.getChildren().add(v);
+        Busqueda.setCenter(v);
+        v.setSpacing(20);
+        v.setAlignment(Pos.CENTER);
     }
     
     public EventHandler<ActionEvent> EHBuscarProducto(VBox v){
@@ -95,9 +101,12 @@ deberá permitir comprar dicho artículo./*
     public void PresentarProductos(VBox v)
     {
         VBox vproductos=new VBox();
+        
         for(int i=0; i<5; i++){
             HBox producto=new HBox();
-            Pane imagenproducto=new Pane(new Label("Imagen del producto "+i));
+
+            Label ip=new Label("Imagen del producto "+i);
+       
             VBox infoProducto=new VBox();
             Label nombre=new Label("Nombre del producto "+i);
             Label cat=new Label("Categoría del producto "+i);
@@ -106,28 +115,31 @@ deberá permitir comprar dicho artículo./*
             Label calpro=new Label("Calificación del producto "+i);
             Label calven=new Label("Calificación del vendedor");
             Button comprar=new Button("Comprar producto "+i);
+            infoProducto.setAlignment(Pos.CENTER);
             infoProducto.getChildren().addAll(nombre, cat,precio,tmaxentr,calpro,calven);
-            producto.getChildren().addAll(imagenproducto, infoProducto, comprar);
+            producto.getChildren().addAll(ip, infoProducto, comprar);
+            producto.setAlignment(Pos.CENTER);
+            producto.setSpacing(110);
             vproductos.getChildren().add(producto);
         }
+        vproductos.setAlignment(Pos.CENTER);
+        vproductos.setSpacing(15);
+        
+        
+       ScrollPane scroll = new ScrollPane();
+       scroll.setMaxWidth(710);
+        scroll.setPrefViewportHeight(400);
+       scroll.setContent(vproductos); 
+
+        super.setFondoTabla(vproductos);
         Busqueda.getChildren().clear();
-        v.getChildren().addAll(vproductos);      
-        Busqueda.getChildren().add(v);
+        v.getChildren().addAll(scroll);  
+        v.setAlignment(Pos.CENTER);
+        Busqueda.setCenter(v);
     }
     
      public void CrearComprasPendientes(){
          VBox v=new VBox();
-         /*Esta opción muestra el listado de los pedidos pendientes, es decir, aquellos que aún no han sido
-recibidos. Además, se podrá visualizar un historial de todos los pedidos realizados, organizarlos
-por fecha, por costo y filtrarlos por nombre del producto o por vendedor. Finalmente, esto
-permitirá generar un PDF con la información filtrada, la cual será enviada al correo electrónico
-del usuario actual.
-Aquí se tiene la posibilidad de calificar el producto y el vendedor utilizando estrellas. Además,
-se puede indicar si el producto fue entregado a tiempo o no, incluso se puede anular el pedido.
-Finalmente, cuando el vendedor llega con el producto pedido, el comprador debe indicar que
-recibió el producto, caso contrario el vendedor no le entregará dicho producto y venta se anula./*
-         
-         */
         TableView<Ventas> table = new TableView();
         table.setEditable(true);
 
@@ -138,8 +150,9 @@ recibió el producto, caso contrario el vendedor no le entregará dicho producto
         
         Button bbuscar=new Button("Ver historial de pedido");
         v.getChildren().addAll(bbuscar, table);
-        ComprasPend.getChildren().add(v);
-        
+        ComprasPend.setCenter(v);
+        v.setSpacing(20);
+        v.setAlignment(Pos.CENTER);
         ObservableList<Ventas> ventas = FXCollections.observableArrayList(
             new Ventas("10112", "Lapiceros", "10/02/19"),
             new Ventas("10113", "Plantas", "1/02/19"));
@@ -170,7 +183,9 @@ tabla*/
         TableColumn lastNameCol = new TableColumn("Precio");
         table.getColumns().addAll(firstNameCol, lastNameCol);
         v.getChildren().addAll(table);
-        MasBuscados.getChildren().add(v);
+        v.setSpacing(20);
+        v.setAlignment(Pos.CENTER);
+        MasBuscados.setCenter(v);
 
         /*al dar clic sobre uno de los artículos el sistema debe verificar automáticamente si el
 usuario ha ingresado al sistema o es un usuario desconocido. En caso de que haya ingresado al

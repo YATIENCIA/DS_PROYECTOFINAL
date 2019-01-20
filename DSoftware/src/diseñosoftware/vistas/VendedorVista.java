@@ -13,22 +13,18 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.stage.StageStyle;
 import modelos.Productos;
 import modelos.Ventas;
 import recursos.constantes;
@@ -38,8 +34,8 @@ import recursos.constantes;
  */
 public class VendedorVista extends CompradorVista{
    // Pane menuV=new Pane();
-    Pane VentasPendientes=new Pane();
-    Pane MisProductos=new Pane();
+    BorderPane VentasPendientes=new BorderPane();
+    BorderPane MisProductos=new BorderPane();
     
     
     public VendedorVista(int tamañoVentana, String titulo) {
@@ -60,7 +56,7 @@ public class VendedorVista extends CompradorVista{
         tab_vp.setContent(VentasPendientes);
         tab_mp.setContent(MisProductos);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-        tabPane.getStylesheets().add(constantes.PathStyles);
+
        // menuC.getChildren().add(tabPane);  
     }
     
@@ -100,8 +96,9 @@ public class VendedorVista extends CompradorVista{
                 }
             }
         });
-        
-        MisProductos.getChildren().add(v);
+        v.setSpacing(20);
+        v.setAlignment(Pos.CENTER);
+        MisProductos.setCenter(v);
         
     }
     
@@ -139,7 +136,9 @@ public class VendedorVista extends CompradorVista{
         });
         
         v.getChildren().addAll(table);
-        VentasPendientes.getChildren().add(v);
+        v.setSpacing(20);
+        v.setAlignment(Pos.CENTER);
+        VentasPendientes.setCenter(v);
 
     }
      

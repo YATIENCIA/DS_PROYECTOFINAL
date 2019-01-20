@@ -13,5 +13,5 @@ public class constantes {
         public static String PathStyles= "recursos/Styles.css";
         public static String fondo= "recursos/fondo.jpg";
         public static String mapa= "recursos/mapa.jpg";
-        
+        public static String tabla= "recursos/tabla.jpg";
 }

@@ -16,12 +16,10 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import recursos.constantes;
@@ -34,7 +32,6 @@ public class Vista {
 
     TextField tname = new TextField();
     TextField tcontra = new TextField();
-    int c=0;
     protected Scene scene;
     protected int tamañoVentana;
     protected String titulo;
@@ -83,7 +80,6 @@ public class Vista {
 
     //Método utilizado como prueba para ver el menú de cada rol
     public Vista VerificarUsu() {
-        System.out.println("Estoy aqui"+tname.getText());
         //Vista vista = new AdministradorVista(50, "AV");
         Vista vista=new Vista(50,"AV");
         switch (tname.getText()) {
@@ -114,9 +110,13 @@ public class Vista {
                 Vista vista = VerificarUsu();
                 Button cerrar = new Button("Cerrar Sesión");
                 cerrar.getStylesheets().add(constantes.PathStyles);
-                HBox general = new HBox();
-
-                general.getChildren().addAll(vista.menu, cerrar);
+                HBox cerrar_hbox = new HBox();
+                cerrar_hbox.getChildren().add(cerrar);
+                cerrar_hbox.setAlignment(Pos.TOP_RIGHT);
+                BorderPane general = new BorderPane();
+                general.setCenter(vista.menu);
+                general.setTop(cerrar_hbox);
+                
                 cerrar.setOnAction(CerrarSesionEH());
                 menu.getChildren().clear();
                 menu.getChildren().add(general);
@@ -140,6 +140,19 @@ public class Vista {
     public void CreateScene() {
     }
 
+    protected void setFondoTabla(ScrollPane root) {
+        root.setStyle("-fx-background-image: url(" + constantes.tabla + ");\n"
+                + "    -fx-background-repeat: stretch;\n"
+                + "    -fx-background-size:" + scene.getWidth() + " " + scene.getHeight() + ";\n"
+                + "    -fx-background-position: center center;");
+    }
+    protected void setFondoTabla(VBox root) {
+        root.setStyle("-fx-background-image: url(" + constantes.tabla + ");\n"
+                + "    -fx-background-repeat: stretch;\n"
+                + "    -fx-background-size:" + scene.getWidth() + " " + scene.getHeight() + ";\n"
+                + "    -fx-background-position: center center;");
+    }
+    
     protected void setFondo(StackPane root) {
         root.setStyle("-fx-background-image: url(" + constantes.fondo + ");\n"
                 + "    -fx-background-repeat: stretch;\n"
