@@ -18,6 +18,11 @@ public class Comprador extends Usuario{
         super(nombres, apellidos);
     }
 
+    public Comprador(String usuario, String contraseña, String nombres, String apellidos, String telefono, String email, String direccion, String cedula, String matricula, boolean whatsapp) {
+        super(usuario, contraseña, nombres, apellidos, telefono, email, direccion, cedula, matricula, whatsapp);
+        carrito=new ArrayList();
+    }
+
     public void setCarrito(ArrayList<Producto> carrito) {
         this.carrito = carrito;
     }
@@ -28,4 +33,12 @@ public class Comprador extends Usuario{
     
     public Comprador(){}
     
+    
+     public static void CrearNuevoComprador(String usuario, String contraseña, String nombres, String apellidos, String telefono, String email, String direccion, String cedula, String matricula, boolean whatsapp) {
+     {
+        Comprador v=new Comprador(usuario,contraseña, nombres, apellidos, telefono, email, direccion, cedula,  matricula,  whatsapp);
+        ConexionSQL.AñadirCuentaALaBase(usuario, contraseña, "Comprador");
+        ConexionSQL.AñadirPersonaALaBase(usuario, contraseña, nombres, apellidos, telefono, email, direccion, cedula, matricula, whatsapp);
+    }
+}
 }

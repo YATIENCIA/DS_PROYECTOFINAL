@@ -29,6 +29,19 @@ public class Usuario {
         this.apellidos = apellidos;
     }
 
+    public Usuario(String usuario, String contraseña, String nombres, String apellidos, String telefono, String email, String direccion, String cedula, String matricula, boolean whatsapp) {
+        this.usuario = usuario;
+        this.contraseña = contraseña;
+        this.nombres = nombres;
+        this.apellidos = apellidos;
+        this.telefono = telefono;
+        this.email = email;
+        this.direccion = direccion;
+        this.cedula = cedula;
+        this.matricula = matricula;
+        this.whatsapp = whatsapp;
+    }
+
     public String getUsuario() {
         return usuario;
     }
@@ -70,4 +83,5 @@ public class Usuario {
     }
     
 
+    
 }

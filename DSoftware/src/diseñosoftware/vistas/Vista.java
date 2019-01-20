@@ -37,7 +37,8 @@ public class Vista {
     protected int tamañoVentana;
     protected String titulo;
     protected StackPane menu = new StackPane();
-
+    public boolean isLogin;
+    
     public Vista(int tamañoVentana, String titulo) {
 
         this.scene = new Scene(menu, 1000, 600);
@@ -50,8 +51,10 @@ public class Vista {
     public Scene getScene() {
         return scene;
     }
-
+    
+  
     public void CreateLogin() {
+        isLogin=true;
         StackPane pane = new StackPane();
         VBox login = new VBox();
         HBox names = new HBox();
@@ -79,52 +82,28 @@ public class Vista {
         blogin.setOnAction(BLoginEH());
     }
 
-    //Método utilizado como prueba para ver el menú de cada rol
-   /* public Vista VerificarUsu() {
-        //Vista vista = new AdministradorVista(50, "AV");
-        Vista vista=new Vista(50,"AV");
-        switch (tname.getText()) {
-            case "a":
-                AdministradorVista av = new AdministradorVista(50, "AV");
-                vista = av;
-                break;
-
-            case "v":
-                VendedorVista vv = new VendedorVista(50, "CV");
-                vista = vv;
-                break;
-            case "c":
-                CompradorVista cv = new CompradorVista(50, "CV");
-                vista = cv;
-                break;
-            default:
-                break;
-        }
-        vista.CreateScene();
-        return vista;
-    }*/
-
     public EventHandler<ActionEvent> BLoginEH() {
         EventHandler<ActionEvent> EH = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 SistemaPoliVentas.IngresarAlSistema(tname.getText(), tcontra.getText());
                 Vista vista = SistemaPoliVentas.vista;
-                
-                Button cerrar = new Button("Cerrar Sesión");
-                cerrar.getStylesheets().add(constantes.PathStyles);
-                HBox cerrar_hbox = new HBox();
-                cerrar_hbox.getChildren().add(cerrar);
-                cerrar_hbox.setAlignment(Pos.TOP_RIGHT);
-                BorderPane general = new BorderPane();
-                general.setCenter(vista.menu);
-                general.setTop(cerrar_hbox);
-                
-                cerrar.setOnAction(CerrarSesionEH());
-                menu.getChildren().clear();
-                menu.getChildren().add(general);
-                scene.setRoot(menu);
+                if(vista!=null)
+                {
+                    Button cerrar = new Button("Salir");
+                    cerrar.getStylesheets().add(constantes.PathStyles);
+                    HBox cerrar_hbox = new HBox();
+                    cerrar_hbox.getChildren().add(cerrar);
+                    cerrar_hbox.setAlignment(Pos.TOP_RIGHT);
+                    BorderPane general = new BorderPane();
+                    general.setCenter(vista.menu);
+                    general.setTop(cerrar_hbox);
 
+                    cerrar.setOnAction(CerrarSesionEH());
+                    menu.getChildren().clear();
+                    menu.getChildren().add(general);
+                    scene.setRoot(menu);
+                }
             }
         };
         return EH;
