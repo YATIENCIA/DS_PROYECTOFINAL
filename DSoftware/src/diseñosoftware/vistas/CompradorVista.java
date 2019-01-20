@@ -5,6 +5,12 @@
  */
 package diseñosoftware.vistas;
 
+import controladores.SistemaPoliVentas;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,7 +28,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import modelos.ConexionSQL;
 import modelos.Producto;
+import modelos.Usuario;
 import modelos.Venta;
 
 /**
@@ -145,6 +153,31 @@ deberá permitir comprar dicho artículo./*
         ObservableList<Venta> list = FXCollections.observableArrayList
             (new Venta(),
             new Venta());
+        
+        String query = "{call  historialComprasEstado(?,?)}";
+        ResultSet rs;
+        String cedula =SistemaPoliVentas.usuario.getCedula();
+        
+        try (Connection conn = ConexionSQL.getConnection();
+            CallableStatement stmt = conn.prepareCall(query)) {
+            //Set IN parameter
+            stmt.setString(1, cedula);  
+            stmt.setString(2, "PENDIENTE");  
+            rs = stmt.executeQuery();
+            while(rs.next()) {
+            Venta venta = new Venta();
+            venta.setCantidad(rs.getInt("cantidad"));
+            venta.setProducto(new Producto(rs.getString("nombre"),rs.getString("descrip"),rs.getString("precio")));
+            list.add(venta);
+        }
+            
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+       
+    
+        
         TableView<Venta> table = Tablas.CrearVentasDescFecha(list);
         
         Button bbuscar=new Button("Ver historial de pedido");

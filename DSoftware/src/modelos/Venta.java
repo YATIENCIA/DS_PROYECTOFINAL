@@ -16,7 +16,8 @@ public class Venta {
     private EstadoVenta estado;
     private Vendedor vendedor;
     private Comprador comprador;
-    private ArrayList<Producto> productos;
+    private Producto producto;
+    private int cantidad;
     private PagoEstrategia estrategia;
 
     public void setPago(boolean pago) {
@@ -35,10 +36,7 @@ public class Venta {
         this.comprador = comprador;
     }
 
-    public void setProductos(ArrayList<Producto> productos) {
-        this.productos = productos;
-    }
-
+  
     public void setEstrategia(PagoEstrategia estrategia) {
         this.estrategia = estrategia;
     }
@@ -59,9 +57,23 @@ public class Venta {
         return comprador;
     }
 
-    public ArrayList<Producto> getProductos() {
-        return productos;
+    public Producto getProducto() {
+        return producto;
     }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    
 
     public PagoEstrategia getEstrategia() {
         return estrategia;
