@@ -22,7 +22,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import modelos.Ventas;
+import modelos.Producto;
+import modelos.Venta;
 
 /**
  *
@@ -140,23 +141,18 @@ deberá permitir comprar dicho artículo./*
     
      public void CrearComprasPendientes(){
          VBox v=new VBox();
-        TableView<Ventas> table = new TableView();
-        table.setEditable(true);
-
-        TableColumn firstNameCol = new TableColumn("Pedidos");
-        TableColumn lastNameCol = new TableColumn("Descripción");
-        TableColumn emailCol = new TableColumn("Fecha de entrega");
-        table.getColumns().addAll(firstNameCol, lastNameCol, emailCol);
+         
+        ObservableList<Venta> list = FXCollections.observableArrayList
+            (new Venta(),
+            new Venta());
+        TableView<Venta> table = Tablas.CrearVentasDescFecha(list);
         
         Button bbuscar=new Button("Ver historial de pedido");
         v.getChildren().addAll(bbuscar, table);
         ComprasPend.setCenter(v);
         v.setSpacing(20);
         v.setAlignment(Pos.CENTER);
-        ObservableList<Ventas> ventas = FXCollections.observableArrayList(
-            new Ventas("10112", "Lapiceros", "10/02/19"),
-            new Ventas("10113", "Plantas", "1/02/19"));
-        table.setItems(ventas);
+        
     }
      
     public EventHandler<ActionEvent> EHHistorial(){
@@ -175,13 +171,15 @@ deberá permitir comprar dicho artículo./*
         /*Este listado debe mostrar el nombre y el precio de los 15 artículos más buscados en forma de
 tabla*/
         VBox v=new VBox();
-
-        TableView table = new TableView();
+        
+        
+        ObservableList<Producto> list = FXCollections.observableArrayList(new Producto("Cuaderno", "Azul universitario", "10.99"),
+            new Producto("Cuaderno", "Verde universitario", "4.99"));
+        
+        
+        TableView table = Tablas.CrearProdPrecDesc(list);
         table.setEditable(true);
-
-        TableColumn firstNameCol = new TableColumn("Producto");
-        TableColumn lastNameCol = new TableColumn("Precio");
-        table.getColumns().addAll(firstNameCol, lastNameCol);
+        
         v.getChildren().addAll(table);
         v.setSpacing(20);
         v.setAlignment(Pos.CENTER);

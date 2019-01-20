@@ -25,8 +25,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import modelos.Productos;
-import modelos.Ventas;
+import modelos.Producto;
+import modelos.Venta;
 import recursos.constantes;
 /**
  *
@@ -65,13 +65,10 @@ public class VendedorVista extends CompradorVista{
         //CRUD sobre usuarios y producto
           VBox v=new VBox();
 
-        TableView<Productos> table = new TableView();
-        table.setEditable(true);
-
-        TableColumn firstNameCol = new TableColumn("Productos");
-        TableColumn lastNameCol = new TableColumn("Descripción");
-        table.getColumns().addAll(firstNameCol, lastNameCol);
-        
+        ObservableList<Producto> list = FXCollections.observableArrayList(new Producto("Cuaderno", "Azul universitario", "10.99"),
+            new Producto("Cuaderno", "Verde universitario", "4.99"));
+   
+        TableView table= Tablas.CrearProdDesc(list);
         Button CrearPro=new Button("Crear nuevo producto");
         v.getChildren().addAll(CrearPro, table);
         
@@ -82,10 +79,7 @@ public class VendedorVista extends CompradorVista{
         cm.getItems().add(mi2);
         mi1.setOnAction(Notificacion("modificar", "producto"));
         mi2.setOnAction(Notificacion("eliminar", "producto"));
-        ObservableList<Productos> productos = FXCollections.observableArrayList(
-            new Productos("Cuaderno", "Azul universitario", "10.99"),
-            new Productos("Cuaderno", "Verde universitario", "4.99"));
-        table.setItems(productos);
+        
         
         table.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
@@ -96,6 +90,7 @@ public class VendedorVista extends CompradorVista{
                 }
             }
         });
+        
         v.setSpacing(20);
         v.setAlignment(Pos.CENTER);
         MisProductos.setCenter(v);
@@ -106,14 +101,11 @@ public class VendedorVista extends CompradorVista{
        public void CrearVentasPendientes(){
         VBox v=new VBox();
 
-        TableView<Ventas> table = new TableView();
-        table.setEditable(true);
-
-        TableColumn firstNameCol = new TableColumn("Ventas");
-        TableColumn lastNameCol = new TableColumn("Descripción");
-        TableColumn emailCol = new TableColumn("Fecha de entrega");
-        table.getColumns().addAll(firstNameCol, lastNameCol, emailCol);
-        
+        ObservableList<Venta> list = FXCollections.observableArrayList
+        (new Venta(),
+            new Venta());
+        TableView<Venta> table = Tablas.CrearVentasDescFecha(list);
+       
         ContextMenu cm = new ContextMenu();
         MenuItem mi1 = new MenuItem("Ver mapa");
         cm.getItems().add(mi1);
@@ -121,10 +113,7 @@ public class VendedorVista extends CompradorVista{
         cm.getItems().add(mi2);
         mi1.setOnAction(verMapa()); 
         mi2.setOnAction(Notificacion("anular", "pedido")); 
-        ObservableList<Ventas> ventas = FXCollections.observableArrayList(
-            new Ventas("10112", "Lapiceros", "10/02/19"),
-            new Ventas("10113", "Plantas", "1/02/19"));
-        table.setItems(ventas);
+        
         table.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
             @Override

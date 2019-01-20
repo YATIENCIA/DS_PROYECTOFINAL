@@ -22,8 +22,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import modelos.Productos;
-import modelos.Usuarios;
+import modelos.Producto;
+import modelos.Usuario;
 
 
 /**
@@ -64,13 +64,13 @@ public class AdministradorVista extends Vista{
     {
         //CRUD sobre usuarios y producto
           VBox v=new VBox();
-
-        TableView table = new TableView();
-        table.setEditable(true);
-
-        TableColumn firstNameCol = new TableColumn("Usuarios");
-        TableColumn lastNameCol = new TableColumn("Descripción");
-        table.getColumns().addAll(firstNameCol, lastNameCol);
+  
+          //Creo filas modelo
+        ObservableList<Usuario> list = FXCollections.observableArrayList(
+            new Usuario("David", "Vendedor"),
+            new Usuario("Kira", "Comprador"));
+        
+        TableView table = Tablas.CrearUsuario(list);
         
         Button CrearUsu=new Button("Crear nuevo usuario");
         v.getChildren().addAll(CrearUsu, table);
@@ -83,11 +83,6 @@ public class AdministradorVista extends Vista{
         mi1.setOnAction(Notificacion("modificar", "usuario"));
         mi2.setOnAction(Notificacion("eliminar", "usuario"));
         
-        //Creo filas modelo
-        ObservableList<Usuarios> usuarios = FXCollections.observableArrayList(
-            new Usuarios("David", "Vendedor"),
-            new Usuarios("Kira", "Comprador"));
-        table.setItems(usuarios);
         
         table.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
@@ -110,12 +105,12 @@ public class AdministradorVista extends Vista{
         //CRUD sobre usuarios y producto
           VBox v=new VBox();
 
-        TableView<Productos> table = new TableView();
-        table.setEditable(true);
-
-        TableColumn firstNameCol = new TableColumn("Productos");
-        TableColumn lastNameCol = new TableColumn("Descripción");
-        table.getColumns().addAll(firstNameCol, lastNameCol);
+        ObservableList<Producto> list = FXCollections.observableArrayList(new Producto("Cuaderno", "Azul universitario", "10.99"),
+            new Producto("Cuaderno", "Verde universitario", "4.99"));
+        
+        
+        TableView table = Tablas.CrearProdPrecDesc(list);
+        
         
         Button CrearPro=new Button("Crear nuevo producto");
         v.getChildren().addAll(CrearPro, table);
@@ -128,13 +123,7 @@ public class AdministradorVista extends Vista{
         
         mi1.setOnAction(Notificacion("modificar", "producto"));
         mi2.setOnAction(Notificacion("eliminar", "producto"));
-        
-         //Creo filas modelo
-        ObservableList<Productos> productos = FXCollections.observableArrayList(
-            new Productos("Cuaderno", "Azul universitario", "10.99"),
-            new Productos("Cuaderno", "Verde universitario", "4.99"));
-        table.setItems(productos);
-
+      
         table.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
             @Override

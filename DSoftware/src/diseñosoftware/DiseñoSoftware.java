@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import modelos.ConexionSQL;
 import recursos.constantes;
 
 /**
@@ -19,9 +20,16 @@ import recursos.constantes;
  * @author IYAC
  */
 public class DiseñoSoftware extends Application{
-
+    
     @Override
     public void start(Stage stage) throws Exception {
+        
+        
+        //Conexion SQL
+       ConexionSQL cs=new ConexionSQL();
+       cs.ConexionSQL();
+       
+       
         Vista vista=new Vista(500, "Test");
         vista.CreateLogin();
         stage.setScene(vista.getScene());

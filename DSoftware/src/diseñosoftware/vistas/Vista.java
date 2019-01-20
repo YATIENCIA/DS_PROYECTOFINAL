@@ -5,6 +5,7 @@
  */
 package diseñosoftware.vistas;
 
+import controladores.SistemaPoliVentas;
 import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -79,7 +80,7 @@ public class Vista {
     }
 
     //Método utilizado como prueba para ver el menú de cada rol
-    public Vista VerificarUsu() {
+   /* public Vista VerificarUsu() {
         //Vista vista = new AdministradorVista(50, "AV");
         Vista vista=new Vista(50,"AV");
         switch (tname.getText()) {
@@ -101,13 +102,15 @@ public class Vista {
         }
         vista.CreateScene();
         return vista;
-    }
+    }*/
 
     public EventHandler<ActionEvent> BLoginEH() {
         EventHandler<ActionEvent> EH = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Vista vista = VerificarUsu();
+                SistemaPoliVentas.IngresarAlSistema(tname.getText(), tcontra.getText());
+                Vista vista = SistemaPoliVentas.vista;
+                
                 Button cerrar = new Button("Cerrar Sesión");
                 cerrar.getStylesheets().add(constantes.PathStyles);
                 HBox cerrar_hbox = new HBox();
