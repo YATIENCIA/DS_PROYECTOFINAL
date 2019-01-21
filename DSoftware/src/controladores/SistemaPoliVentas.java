@@ -68,6 +68,7 @@ public class SistemaPoliVentas {
                     vista = nu;
                     vista.CreateScene();
                 }
+                
         }
         
     }

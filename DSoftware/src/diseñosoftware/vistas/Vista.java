@@ -18,11 +18,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import modelos.ConexionSQL;
+import modelos.Producto;
+import modelos.Usuario;
 import recursos.constantes;
 
 /**
@@ -141,17 +145,82 @@ public class Vista {
                 + "    -fx-background-size:" + scene.getWidth() + " " + scene.getHeight() + ";\n"
                 + "    -fx-background-position: center center;");
     }
-    public static EventHandler<ActionEvent>  Notificacion(String tipo, String elemento){
+    
+    
+    public static EventHandler<ActionEvent>  NotificacionEliminarProducto(String elemento, Producto producto,TableView table){
         EventHandler<ActionEvent> EH=new EventHandler() {
             @Override
             public void handle(Event event) {
                 Alert alert = new Alert(AlertType.CONFIRMATION);
                 alert.setTitle("Cuadro de confirmación");
                 alert.setHeaderText("");
-                alert.setContentText("¿Está seguro que desea "+tipo+" el "+elemento+"?");
+                alert.setContentText("¿Está seguro que desea eliminar el "+elemento+"?");
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK){
-                    // ... user chose OK
+                    ConexionSQL.CambiarEstadoProducto(producto.getNombre());
+                    table.getItems().remove(producto);
+                } else {
+                    // ... user chose CANCEL or closed the dialog
+                }
+                }
+        };
+        return EH;     
+    }
+    public static EventHandler<ActionEvent>  NotificacionEliminarUsuario(String elemento, Usuario usuario, TableView table){
+        EventHandler<ActionEvent> EH=new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Cuadro de confirmación");
+                alert.setHeaderText("");
+                alert.setContentText("¿Está seguro que desea eliminar el "+elemento+"?");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK){
+                    ConexionSQL.CambiarEstadoCuenta(usuario.getUsuario());
+                    table.getItems().remove(usuario);
+                } else {
+                    // ... user chose CANCEL or closed the dialog
+                }
+                }
+        };
+        return EH;     
+    }
+    
+    
+ 
+    
+    
+    
+    public static EventHandler<ActionEvent>  NotificacionModificarUsuario(String elemento, Usuario usuario, TableView table){
+        EventHandler<ActionEvent> EH=new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Cuadro de confirmación");
+                alert.setHeaderText("");
+                alert.setContentText("¿Está seguro que desea modificar el "+elemento+"?");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK){
+                    System.out.println("Usuario "+usuario.getUsuario()+" ha sido modificado!");
+                } else {
+                    // ... user chose CANCEL or closed the dialog
+                }
+                }
+        };
+        return EH;     
+    }
+    
+    public static EventHandler<ActionEvent>  NotificacionModificarProducto(String elemento, Producto producto, TableView table){
+        EventHandler<ActionEvent> EH=new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Cuadro de confirmación");
+                alert.setHeaderText("");
+                alert.setContentText("¿Está seguro que desea modificar el "+elemento+"?");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK){
+                     System.out.println("Producto "+producto.getNombre()+" ha sido modificado!");
                 } else {
                     // ... user chose CANCEL or closed the dialog
                 }

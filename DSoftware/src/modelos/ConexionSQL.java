@@ -81,4 +81,35 @@ public class ConexionSQL {
             System.out.println(ex.getMessage());
         }
     }
+    
+      public static void CambiarEstadoCuenta(String usuario)
+    {
+        String query = "{call eliminarCuenta(?)}";
+        ResultSet rs;
+        try (Connection conn = ConexionSQL.getConnection();
+                CallableStatement stmt = conn.prepareCall(query)) {
+            //Set IN parameter
+            stmt.setString(1, usuario);
+            rs = stmt.executeQuery();
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+      
+      
+       public static void CambiarEstadoProducto(String codigo)
+    {
+        String query = "{call eliminarProducto(?)}";
+        ResultSet rs;
+        try (Connection conn = ConexionSQL.getConnection();
+                CallableStatement stmt = conn.prepareCall(query)) {
+            //Set IN parameter
+            stmt.setString(1, codigo);
+            rs = stmt.executeQuery();
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
 }

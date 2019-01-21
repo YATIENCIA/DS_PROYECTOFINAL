@@ -26,6 +26,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import modelos.Producto;
+import modelos.Usuario;
 import modelos.Venta;
 import recursos.constantes;
 /**
@@ -77,8 +78,7 @@ public class VendedorVista extends CompradorVista{
         cm.getItems().add(mi1);
         MenuItem mi2 = new MenuItem("Eliminar");
         cm.getItems().add(mi2);
-        mi1.setOnAction(Notificacion("modificar", "producto"));
-        mi2.setOnAction(Notificacion("eliminar", "producto"));
+        
         
         
         table.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
@@ -87,6 +87,9 @@ public class VendedorVista extends CompradorVista{
             public void handle(MouseEvent t) {
                 if(t.getButton() == MouseButton.SECONDARY) {
                     cm.show(table, t.getScreenX(), t.getScreenY());
+                    Producto producto = (Producto) table.getSelectionModel().getSelectedItem();
+                    mi1.setOnAction(NotificacionModificarProducto("producto",producto, table));
+                   mi2.setOnAction(NotificacionEliminarProducto("producto",producto, table));
                 }
             }
         });
@@ -112,7 +115,7 @@ public class VendedorVista extends CompradorVista{
         MenuItem mi2 = new MenuItem("Anular");
         cm.getItems().add(mi2);
         mi1.setOnAction(verMapa()); 
-        mi2.setOnAction(Notificacion("anular", "pedido")); 
+      //  mi2.setOnAction(Notificacion("anular", "pedido")); 
         
         table.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
