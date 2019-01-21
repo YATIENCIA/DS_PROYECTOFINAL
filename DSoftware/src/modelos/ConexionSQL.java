@@ -25,7 +25,7 @@ public class ConexionSQL {
 
     public void ConexionSQL() {
         try {
-            cn = DriverManager.getConnection("jdbc:mysql://localhost/poliventas", "root", "123456789");
+            cn = DriverManager.getConnection("jdbc:mysql://localhost/poliventas", "root", "root");
             System.out.println("Conexión exitosa!");
         } catch (SQLException ex) {
             System.out.println("ERROR");
@@ -36,6 +36,7 @@ public class ConexionSQL {
         try {
             if (cn.isClosed()) {
                 cn = DriverManager.getConnection("jdbc:mysql://localhost/poliventas", "root", "123456789");
+
             }
         } catch (SQLException ex) {
 
