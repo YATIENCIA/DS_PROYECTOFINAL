@@ -146,6 +146,17 @@ public class VendedorControlador {
         grid.add(tmatricula, 1, 8);
         
         grid.add(aceptar,0,10);
+        
+        
+        user.setUsuario(tusuario.getText());
+        user.setContraseña(tcontraseña.getText());
+        user.setNombres(tnombres.getText());
+        user.setApellidos(tapellidos.getText());
+        user.setTelefono(ttelefono.getText());
+        user.setEmail(temail.getText());
+        user.setDireccion(tdireccion.getText());
+        user.setCedula(tcedula.getText());
+        user.setMatricula(tmatricula.getText());
         //aceptar.setOnAction(value);
         
     }
