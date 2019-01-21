@@ -52,6 +52,7 @@ public class Comprador extends Usuario {
         Comprador v = new Comprador(usuario, contraseña, nombres, apellidos, telefono, email, direccion, cedula, matricula, whatsapp);
         ConexionSQL.AñadirCuentaALaBase(usuario, contraseña, "Comprador");
         ConexionSQL.AñadirPersonaALaBase(usuario, contraseña, nombres, apellidos, telefono, email, direccion, cedula, matricula, whatsapp);
-    }
+        
+        }
 
 }

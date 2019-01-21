@@ -19,12 +19,12 @@ import recursos.constantes;
  *
  * @author IYAC
  */
-public class DiseñoSoftware extends Application{
+public class main extends Application{
+    public static Stage stage;
     
     @Override
     public void start(Stage stage) throws Exception {
-        
-        
+       
         //Conexion SQL
        ConexionSQL cs=new ConexionSQL();
        cs.ConexionSQL();
@@ -33,6 +33,7 @@ public class DiseñoSoftware extends Application{
         Vista vista=new Vista(500, "Test");
         vista.CreateLogin();
         stage.setScene(vista.getScene());
+        this.stage=stage;
         stage.setHeight(650);
         stage.setWidth(1000);
         

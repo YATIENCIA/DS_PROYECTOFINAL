@@ -12,7 +12,7 @@ begin
 select p.nombre , sq.cantidad
 from producto p 
 join (select * 
-	  from pedidos
+	  from pedido
       where comprador=cedu and estado=estadoin) sq on sq.producto=p.idproducto;
 end $$
 
@@ -20,7 +20,7 @@ create procedure historialVentas(in cedu varchar(10), in estadoin varchar(15))
 begin 
 select p.nombre as nombre, p.costo as precio, p.descripcion as descrip, ped.cantidad as cantidad 
 from producto p
-join pedidos ped on ped.producto=p.idproducto
+join pedido ped on ped.producto=p.idproducto
 where p.vendedor=cedu and ped.estado=estadoin;
 end $$
 
@@ -60,16 +60,16 @@ begin
 insert into persona(cedula, nombres,apellidos,numero,correo,direccion,matricula,saldo,usuario) values (cedulain, nombresin,apellidosin,numeroin,correoin,direccionin,matriculain,saldoin,usuarioin);
 end$$
 
+#drop procedure ingresarProducto;
 create procedure ingresarProducto(
 in idproductoin			int,
 in nombrein			varchar(15),
-in descripcionin			varchar(100),
 in costoin				double,
 in cantidadDisponiblein	int,
 in vendedorin			varchar(10))
 begin
-insert into producto(idproducto, nombre, descripcion, costo, cantidadDisponible, vendedor) 
-values (idproductoin, nombrein, descripcionin, costoin, cantidadDisponiblein, vendedorin);
+insert into producto(idproducto, nombre, costo, cantidadDisponible, vendedor) 
+values (idproductoin, nombrein, costoin, cantidadDisponiblein, vendedorin);
 end$$
 
 create procedure ingresarPedido(

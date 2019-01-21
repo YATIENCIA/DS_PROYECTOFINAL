@@ -17,5 +17,5 @@ end$$
 create procedure eliminarProducto(
 in id	varchar(15))
 begin
-update producto set eliminado = true  where id=idproducto;
+update producto set eliminado=true  where id=idproducto;
 end$$

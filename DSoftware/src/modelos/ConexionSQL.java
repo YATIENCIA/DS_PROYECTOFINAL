@@ -25,7 +25,7 @@ public class ConexionSQL {
 
     public void ConexionSQL() {
         try {
-            cn = DriverManager.getConnection("jdbc:mysql://localhost/poliventas", "root", "root");
+            cn = DriverManager.getConnection("jdbc:mysql://localhost/poliventas", "root", "123456789");
             System.out.println("Conexión exitosa!");
         } catch (SQLException ex) {
             System.out.println("ERROR");
@@ -165,10 +165,11 @@ public class ConexionSQL {
         try {
 
             //String nombre, Categoria categoria, double precio, String TiempoMaxEntrega, Calificacion calificacion, Vendedor vendedor
-            String SQL = "select usuario,contraseña,rol from cuenta where eliminado=false;";
+            String SQL = "select cedula,c.usuario,contraseña,rol from cuenta c, persona p where p.usuario=c.usuario and c.eliminado=false;";
             ResultSet rs = ConexionSQL.getConnection().createStatement().executeQuery(SQL);
             while (rs.next()) {
                 Usuario usuario=new Usuario();
+                usuario.setCedula(rs.getString("cedula"));
                 usuario.setUsuario(rs.getString("usuario"));
                 usuario.setContraseña(rs.getString("contraseña"));
                 usuario.setTipo(rs.getString("rol"));

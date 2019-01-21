@@ -57,8 +57,8 @@ public class Vista {
     }
     
   
-    public void CreateLogin() {
-        isLogin=true;
+    public  void CreateLogin() {
+
         StackPane pane = new StackPane();
         VBox login = new VBox();
         HBox names = new HBox();
@@ -94,6 +94,8 @@ public class Vista {
                 Vista vista = SistemaPoliVentas.vista;
                 if(vista!=null)
                 {
+                    tname.setText("");
+                    tcontra.setText("");
                     Button cerrar = new Button("Salir");
                     cerrar.getStylesheets().add(constantes.PathStyles);
                     HBox cerrar_hbox = new HBox();

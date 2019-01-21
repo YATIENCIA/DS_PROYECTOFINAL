@@ -35,6 +35,13 @@ public class Producto {
         this.vendedor = vendedor;
     }
 
+    public boolean equals(Producto producto) {
+        boolean nombreIgual = producto.getNombre().equals(this.nombre);
+        boolean precioIgual = (producto.getPrecio()==(this.precio));
+
+        return nombreIgual && precioIgual;
+
+    }
     
     public void setNombre(String nombre) {
         this.nombre = nombre;
