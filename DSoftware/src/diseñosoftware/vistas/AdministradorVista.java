@@ -70,10 +70,11 @@ public class AdministradorVista extends Vista {
         VBox v = new VBox();
 
         //Creo filas modelo
-        ObservableList<Usuario> list = FXCollections.observableArrayList(
-                new Usuario("David", "Vendedor"),
-                new Usuario("Kira", "Comprador"));
-
+        ObservableList<Usuario> list =ConexionSQL.TodosLosUsuarios();
+        for(Usuario u: list)
+        {
+            System.out.println(u);
+        }
         TableView table = Tablas.CrearUsuario(list);
 
         Button CrearUsu = new Button("Crear nuevo usuario");
@@ -113,7 +114,7 @@ public class AdministradorVista extends Vista {
         EventHandler<ActionEvent> e = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Admin");
+              
                 NuevoUsuario nu = new NuevoUsuario(50, "Nuevo Usuario");
                 nu.CreateScene();
                 BorderPane general = new BorderPane();
@@ -130,12 +131,8 @@ public class AdministradorVista extends Vista {
     public void CrearAdministrarProductos() {
         //CRUD sobre usuarios y producto
         VBox v = new VBox();
-
-        ObservableList<Producto> list = FXCollections.observableArrayList(new Producto("Cuaderno", "Azul universitario", "10.99"),
-                new Producto("Cuaderno", "Verde universitario", "4.99"));
-
+        ObservableList<Producto> list = ConexionSQL.TodosLosProductos();
         TableView table = Tablas.CrearProdPrecDesc(list);
-
         Button CrearPro = new Button("Crear nuevo producto");
         v.getChildren().addAll(CrearPro, table);
 

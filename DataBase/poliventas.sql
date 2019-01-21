@@ -24,10 +24,12 @@ foreign key (usuario) references cuenta(usuario));
 create table producto(
 idproducto			int auto_increment primary key,
 nombre				varchar(15),
-descripcion			varchar(100),
+tiempoMaxEntrega	int,
+categoria			varchar(100),
 costo				double,
 cantidadDisponible	int,
 eliminado			boolean default false,
+calificacion		int,
 vendedor			varchar(10),
 foreign key	(vendedor) references persona(cedula));
 
@@ -41,6 +43,8 @@ producto		int,
 cantidad 		int,
 estado			varchar(15),
 tipopago		int,
+fechaPedido		date,
+entregadoAtiempo boolean,
 primary key(comprador,producto),
 foreign key	(comprador) references persona(cedula),
 foreign key	(producto) references producto(idproducto),

@@ -1,8 +1,8 @@
 use poliventas;
 delimiter $$
-create procedure obtenerRol(in us varchar(15), in pass varchar(15), out rol varchar(15))
+create procedure obtenerRol(in us varchar(15), in pass varchar(15), out rolout varchar(15))
 begin
-select rol into rol
+select rol into rolout
 from cuenta
 where usuario= us and contraseña= pass and eliminado=false;
 end $$
@@ -18,7 +18,7 @@ end $$
 
 create procedure historialVentas(in cedu varchar(10), in estadoin varchar(15))
 begin 
-select p.nombre, ped.cantidad
+select p.nombre as nombre, p.costo as precio, p.descripcion as descrip, ped.cantidad as cantidad 
 from producto p
 join pedidos ped on ped.producto=p.idproducto
 where p.vendedor=cedu and ped.estado=estadoin;
@@ -26,8 +26,11 @@ end $$
 
 create procedure busquedaProd(in busqueda varchar(100))
 begin 
-select nombre, descripcion, costo, cantidadDisponible
+select nombre, descripcion, costo, cantidadDisponible, tiempoMaxEntrega, sq.calificacion as calificacion
 from producto
+join( select avg(calificacion) as calificacion, producto
+		from calificacionproducto
+        group by producto) sq on sq.producto= producto.idproducto 
 where (nombre like CONCAT('%', busqueda, '%') or descripcion like CONCAT('%', busqueda, '%')) and eliminado=false;
 end$$
 

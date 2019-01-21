@@ -22,8 +22,8 @@ public class Vendedor extends Comprador{
     private ArrayList<Venta> ventas;
     private ArrayList<Producto> productos;
 
-    public Vendedor(String nombres, String apellidos) {
-        super(nombres, apellidos);
+    public Vendedor(String nombres) {
+        super.nombres=nombres;
     }
 
     private Vendedor(String usuario, String contraseña, String nombres, String apellidos, String telefono, String email, String direccion, String cedula, String matricula, boolean whatsapp) {
@@ -43,5 +43,6 @@ public class Vendedor extends Comprador{
         ConexionSQL.AñadirPersonaALaBase(usuario, contraseña, nombres, apellidos, telefono, email, direccion, cedula, matricula, whatsapp);
     }
 
+     
     }
 }

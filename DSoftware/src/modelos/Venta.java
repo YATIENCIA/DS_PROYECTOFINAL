@@ -20,6 +20,18 @@ public class Venta {
     private int cantidad;
     private PagoEstrategia estrategia;
 
+    public Venta(){}
+    public Venta(boolean pago, EstadoVenta estado, Vendedor vendedor, Comprador comprador, Producto producto, int cantidad, PagoEstrategia estrategia) {
+        this.pago = pago;
+        this.estado = estado;
+        this.vendedor = vendedor;
+        this.comprador = comprador;
+        this.producto = producto;
+        this.cantidad = cantidad;
+        this.estrategia = estrategia;
+    }
+
+    
     public void setPago(boolean pago) {
         this.pago = pago;
     }

@@ -11,12 +11,15 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
@@ -28,6 +31,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import modelos.Comprador;
 import modelos.ConexionSQL;
 import modelos.Producto;
 import modelos.Usuario;
@@ -74,56 +79,51 @@ public class CompradorVista extends Vista{
     public void CrearBusqueda(){
         VBox v=new VBox();
         HBox h=new HBox();
-        HBox h2=new HBox();
         Label lbuscar=new Label("Nombre del producto: ");
-        Label ldesc=new Label("Descripción del producto: ");
         Button bbuscar=new Button("Buscar");
         TextField tfnombre=new TextField();
-        TextField tfdesc=new TextField();
         h.getChildren().addAll(lbuscar, tfnombre);
-        h2.getChildren().addAll(ldesc, tfdesc);
         h.setAlignment(Pos.CENTER);
-        h2.setAlignment(Pos.CENTER);
-        v.getChildren().addAll(h,h2,bbuscar);
+        v.getChildren().addAll(h,bbuscar);
         
         /*Cada artículo mostrado debe tener nombre, categoría, precio, tiempo máximo de entrega y
 calificación del producto y del vendedor (Escala de 5 estrellas para cada uno). Aquí mismo
 deberá permitir comprar dicho artículo./*
         
         */
-        bbuscar.setOnAction(EHBuscarProducto(v));
+        bbuscar.setOnAction(EHBuscarProducto(v, tfnombre.getText()));
         Busqueda.setCenter(v);
         v.setSpacing(20);
         v.setAlignment(Pos.CENTER);
     }
     
-    public EventHandler<ActionEvent> EHBuscarProducto(VBox v){
+    public EventHandler<ActionEvent> EHBuscarProducto(VBox v, String palabra){
         EventHandler<ActionEvent> EH=new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                  PresentarProductos(v);  
+                  PresentarProductos(v, palabra);  
             }
         };
         return EH;
     }
     
-    public void PresentarProductos(VBox v)
+    public void PresentarProductos(VBox v, String palabra)
     {
         VBox vproductos=new VBox();
-        
-        for(int i=0; i<5; i++){
+        List<Producto> lista=ConexionSQL.BuscarProductos(palabra);
+        for(Producto p: lista)
+        {
             HBox producto=new HBox();
 
-            Label ip=new Label("Imagen del producto "+i);
-       
+            Label ip=new Label("Imagen del producto ");
             VBox infoProducto=new VBox();
-            Label nombre=new Label("Nombre del producto "+i);
-            Label cat=new Label("Categoría del producto "+i);
-            Label precio=new Label("Precio del producto "+i);
-            Label tmaxentr=new Label("Tiempo máximo de entrega del producto "+i);
-            Label calpro=new Label("Calificación del producto "+i);
-            Label calven=new Label("Calificación del vendedor");
-            Button comprar=new Button("Comprar producto "+i);
+            Label nombre=new Label("Nombre del producto "+p.getNombre());
+            Label cat=new Label("Categoría del producto "+p.getCategoria());
+            Label precio=new Label("Precio del producto "+p.getPrecio());
+            Label tmaxentr=new Label("Tiempo máximo de entrega del producto "+p.getTiempoMaxEntrega());
+            Label calpro=new Label("Calificación del producto "+p.getCalificacion());
+            Label calven=new Label("Vendedor  "+p.getVendedor());
+            Button comprar=new Button("Comprar producto ");
             infoProducto.setAlignment(Pos.CENTER);
             infoProducto.getChildren().addAll(nombre, cat,precio,tmaxentr,calpro,calven);
             producto.getChildren().addAll(ip, infoProducto, comprar);
@@ -147,12 +147,46 @@ deberá permitir comprar dicho artículo./*
         Busqueda.setCenter(v);
     }
     
+    
+    public void StageComprar(Producto p)
+    {
+        BorderPane bp=new BorderPane();
+        Stage stage=new Stage();
+        
+        Label lpro=new Label(p.getNombre()+"- categoria:"+p.getCategoria());
+        Label l=new Label("Escoja el método de pago: ");
+        ComboBox<String> c_pago=new ComboBox();
+        c_pago.setPromptText("Efectivo");
+        c_pago.getItems().addAll("Efectivo","AppMovil");
+        Label lc=new Label("Cantidad");
+        TextField tc_can=new TextField();
+        
+        Button pagar=new Button("Comprar");
+        bp.setTop(lpro);
+        bp.setLeft(l);
+        bp.setTop(c_pago);
+        bp.setLeft(lc);
+        bp.setTop(tc_can);
+        bp.setBottom(pagar);
+        pagar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                stage.close();
+                ((Comprador) SistemaPoliVentas.usuario).comprar(p, c_pago.getPromptText(),Integer.parseInt(tc_can.getText()));
+            }
+        });
+        Scene scene=new Scene(bp, 100, 100);
+        stage.setScene(scene);
+        stage.show();
+        
+    }
+    
+    
+    
      public void CrearComprasPendientes(){
          VBox v=new VBox();
          
-        ObservableList<Venta> list = FXCollections.observableArrayList
-            (new Venta(),
-            new Venta());
+        ObservableList<Venta> list = FXCollections.observableArrayList();
         
         String query = "{call  historialComprasEstado(?,?)}";
         ResultSet rs;
@@ -167,10 +201,12 @@ deberá permitir comprar dicho artículo./*
             while(rs.next()) {
             Venta venta = new Venta();
             venta.setCantidad(rs.getInt("cantidad"));
-            venta.setProducto(new Producto(rs.getString("nombre"),rs.getString("descrip"),rs.getString("precio")));
+            Producto p=new Producto();
+            p.setNombre(rs.getString("nombre"));
+            p.setPrecio(rs.getDouble("precio"));
+            venta.setProducto(p);
             list.add(venta);
-        }
-            
+        }   
             
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -206,9 +242,9 @@ tabla*/
         VBox v=new VBox();
         
         
-        ObservableList<Producto> list = FXCollections.observableArrayList(new Producto("Cuaderno", "Azul universitario", "10.99"),
-            new Producto("Cuaderno", "Verde universitario", "4.99"));
+        ObservableList<Producto> list = FXCollections.observableArrayList();
         
+        //Aqui van los más buscado!!!!!!!
         
         TableView table = Tablas.CrearProdPrecDesc(list);
         table.setEditable(true);

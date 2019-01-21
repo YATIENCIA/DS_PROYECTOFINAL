@@ -10,5 +10,5 @@ package modelos;
  * @author IYAC
  */
 interface PagoEstrategia {
-    public void pago(double cantidad);
+    public void pago(int cantpro, Producto p);
 }

@@ -66,8 +66,9 @@ public class VendedorVista extends CompradorVista{
         //CRUD sobre usuarios y producto
           VBox v=new VBox();
 
-        ObservableList<Producto> list = FXCollections.observableArrayList(new Producto("Cuaderno", "Azul universitario", "10.99"),
-            new Producto("Cuaderno", "Verde universitario", "4.99"));
+        ObservableList<Producto> list = FXCollections.observableArrayList();
+        
+        //AQUI VAN LOS PRODUCTOS POR VENDEDOR
    
         TableView table= Tablas.CrearProdDesc(list);
         Button CrearPro=new Button("Crear nuevo producto");

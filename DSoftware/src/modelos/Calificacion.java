@@ -5,11 +5,29 @@
  */
 package modelos;
 
+import java.util.logging.Logger;
+
 /**
  *
  * @author IYAC
  */
 public class Calificacion {
     private int calificacion;
+
+    public Calificacion(int calificacion) {
+        this.calificacion = calificacion;
+    }
+
+    public void setCalificacion(int calificacion) {
+        this.calificacion = calificacion;
+    }
+
+    public int getCalificacion() {
+        return calificacion;
+    }
+    @Override
+    public String toString() {
+        return Integer.toString(calificacion);
+    }
     
 }

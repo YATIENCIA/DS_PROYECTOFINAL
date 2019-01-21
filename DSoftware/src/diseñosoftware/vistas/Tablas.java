@@ -28,10 +28,10 @@ public class Tablas {
         TableColumn<Producto, String> NameCol //
                 = new TableColumn<Producto, String>("Nombre del producto");
         TableColumn<Producto, String> DescCol//
-                = new TableColumn<Producto, String>("Descripción");
+                = new TableColumn<Producto, String>("Categoria");
 
         NameCol.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        DescCol.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+        DescCol.setCellValueFactory(new PropertyValueFactory<>("categoria"));
         NameCol.setSortType(TableColumn.SortType.DESCENDING);
         table.setItems(list);
 
@@ -46,12 +46,12 @@ public class Tablas {
         TableColumn<Producto, String> NameCol //
                 = new TableColumn<Producto, String>("Nombre del producto");
         TableColumn<Producto, String> DescCol//
-                = new TableColumn<Producto, String>("Descripción");
-        TableColumn<Producto, String> PrecCol//
-                = new TableColumn<Producto, String>("Precio");
+                = new TableColumn<Producto, String>("Categoria");
+        TableColumn<Producto, Double> PrecCol//
+                = new TableColumn<Producto, Double>("Precio");
 
         NameCol.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        DescCol.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+        DescCol.setCellValueFactory(new PropertyValueFactory<>("categoria"));
         PrecCol.setCellValueFactory(new PropertyValueFactory<>("precio"));
         NameCol.setSortType(TableColumn.SortType.DESCENDING);
         table.setItems(list);
@@ -68,15 +68,15 @@ public class Tablas {
     TableView<Venta> table = new TableView();
     table.setEditable(true);
      TableColumn<Venta, String> PedCol//
-                = new TableColumn<Venta, String>("Código del pedido");
+                = new TableColumn<Venta, String>("Producto");
         TableColumn<Venta, String> DescCol//
-                = new TableColumn<Venta, String>("Descripción");
+                = new TableColumn<Venta, String>("Cantidad");
         TableColumn<Venta, String> DateCol//
-                = new TableColumn<Venta, String>("Fecha de entrega");
+                = new TableColumn<Venta, String>("Estado");
         
-        PedCol.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        DescCol.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
-        DateCol.setCellValueFactory(new PropertyValueFactory<>("FE"));
+        PedCol.setCellValueFactory(new PropertyValueFactory<>("producto"));
+        DescCol.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
+        DateCol.setCellValueFactory(new PropertyValueFactory<>("estado"));
         DateCol.setSortType(TableColumn.SortType.DESCENDING);
         table.setItems(list);
 
@@ -91,15 +91,15 @@ public class Tablas {
     TableView<Usuario> table = new TableView();
     table.setEditable(true);
      TableColumn<Usuario, String> nomCol//
-                = new TableColumn<Usuario, String>("Nombre de usuario");
+                = new TableColumn<Usuario, String>("Cédula");
         TableColumn<Usuario, String> rolCol//
-                = new TableColumn<Usuario, String>("Rol");
+                = new TableColumn<Usuario, String>("Usuario");
         TableColumn<Usuario, Boolean> EstadoCol//
-                = new TableColumn<Usuario, Boolean>("Estado");
+                = new TableColumn<Usuario, Boolean>("Tipo");
         
-        nomCol.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        rolCol.setCellValueFactory(new PropertyValueFactory<>("rol"));
-        EstadoCol.setCellValueFactory(new PropertyValueFactory<>("estado"));
+        nomCol.setCellValueFactory(new PropertyValueFactory<>("cedula"));
+        rolCol.setCellValueFactory(new PropertyValueFactory<>("usuario"));
+        EstadoCol.setCellValueFactory(new PropertyValueFactory<>("tipo"));
       
         nomCol.setSortType(TableColumn.SortType.DESCENDING);
         table.setItems(list);
