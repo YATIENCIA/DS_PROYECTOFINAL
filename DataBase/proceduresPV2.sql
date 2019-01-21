@@ -7,3 +7,15 @@ from persona
 where usuario= us ;
 end $$
 
+
+create procedure eliminarCuenta(
+in us	varchar(15))
+begin
+update cuenta set eliminado = true  where usuario=us;
+end$$
+
+create procedure eliminarProducto(
+in id	varchar(15))
+begin
+update producto set eliminado = true  where id=idproducto;
+end$$
