@@ -138,5 +138,12 @@ public class Usuario {
     public void setWhatsapp(boolean whatsapp) {
         this.whatsapp = whatsapp;
     }
+
+    @Override
+    public String toString() {
+        return "Usuario{" + "usuario=" + usuario + ", contrase\u00f1a=" + contraseña + ", nombres=" + nombres + ", apellidos=" + apellidos + ", telefono=" + telefono + ", email=" + email + ", direccion=" + direccion + ", cedula=" + cedula + ", matricula=" + matricula + ", whatsapp=" + whatsapp + ", tipo=" + tipo + '}';
+    }
+    
+    
     
 }
