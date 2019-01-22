@@ -110,7 +110,54 @@ public class ConexionSQL {
             System.out.println(ex.getMessage());
         }
     }
+    
+    /**
+    static public List<Producto> ProductosMasBuscados(String palabras){
+        
+        List<Producto> list = FXCollections.observableArrayList();
+        try {
 
+            //String nombre, Categoria categoria, double precio, String TiempoMaxEntrega, Calificacion calificacion, Vendedor vendedor
+            String SQL = "select nombre, categoria, where (nombre like '%" + palabras + "%' or categoria like '%" + palabras + "%') and eliminado=false;";
+            ResultSet rs = ConexionSQL.getConnection().createStatement().executeQuery(SQL);
+            while (rs.next()) {
+                Producto producto = new Producto();
+                producto.setNombre(rs.getString("nombre"));
+                producto.setCategoria(new Categoria(rs.getString("categoria")));
+                list.add(producto);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ConexionSQL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    
+    
+    }*/
+    
+    
+    static public ObservableList<Producto> ProductosMasBuscadosQuemado(){
+        
+        ObservableList<Producto> list = FXCollections.observableArrayList();
+        
+            Producto p1 = new Producto();
+            p1.setNombre("Camiseta");
+            p1.setCategoria(null);
+            
+            Producto p2 = new Producto();
+            p2.setNombre("Pantaloneta");
+            p2.setCategoria(null);
+            
+            list.add(p1);
+            list.add(p2);
+        
+        return list;
+    
+    
+    }
+    
+    
+    
     static public List<Producto> BuscarProductos(String palabras) {
         List<Producto> list = FXCollections.observableArrayList();
         try {

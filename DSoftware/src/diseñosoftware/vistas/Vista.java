@@ -6,6 +6,7 @@
 package diseñosoftware.vistas;
 
 import controladores.SistemaPoliVentas;
+import diseñosoftware.main;
 import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -37,7 +38,7 @@ public class Vista {
 
     TextField tname = new TextField();
     TextField tcontra = new TextField();
-    protected Scene scene;
+    static Scene scene;
     protected int tamañoVentana;
     protected String titulo;
     protected StackPane menu = new StackPane();
@@ -64,9 +65,10 @@ public class Vista {
         HBox names = new HBox();
         HBox contras = new HBox();
         Button blogin = new Button("Login");
+        Button productosMasBuscados = new Button("Productos Mas buscados");
 
         blogin.getStylesheets().add(constantes.PathStyles);
-
+        productosMasBuscados.getStylesheets().add(constantes.PathStyles);
         Label lname = new Label("Ingrese su usuario: ");
         Label lcontra = new Label("Ingrese su contraseña: ");
 
@@ -74,9 +76,10 @@ public class Vista {
         lcontra.getStylesheets().add(constantes.PathStyles);
         names.getChildren().addAll(lname, tname);
         contras.getChildren().addAll(lcontra, tcontra);
-        login.getChildren().addAll(names, contras, blogin);
+        login.getChildren().addAll(names, contras, blogin,productosMasBuscados);
 
         login.setAlignment(Pos.CENTER);
+        login.setSpacing(5);
         names.setAlignment(Pos.CENTER);
         contras.setAlignment(Pos.CENTER);
         blogin.setAlignment(Pos.CENTER);
@@ -84,6 +87,23 @@ public class Vista {
         this.setFondo(pane);
         scene.setRoot(pane);
         blogin.setOnAction(BLoginEH());
+        
+        
+        
+        productosMasBuscados.setOnAction(e->{
+        
+        
+            ProductosMasBuscadosVista pmbx = new ProductosMasBuscadosVista();
+            scene.setRoot(pmbx.getBorder());
+            
+            
+        
+        
+        });
+        
+        
+        
+        
     }
 
     public EventHandler<ActionEvent> BLoginEH() {
