@@ -13,8 +13,6 @@ import java.util.ArrayList;
  */
 public class Comprador extends Usuario {
 
-    private ArrayList<Producto> carrito;
-
     public void comprar(Producto p, String metodo, int cantidad) {
         PagoEstrategia ef;
         if (metodo.equalsIgnoreCase("efectivo")) {
@@ -22,7 +20,6 @@ public class Comprador extends Usuario {
         } else {
             ef = new EstrategiaAppMovil();
         }
-
         ef.pago(cantidad, p);
         
     }
@@ -33,16 +30,9 @@ public class Comprador extends Usuario {
 
     public Comprador(String usuario, String contraseña, String nombres, String apellidos, String telefono, String email, String direccion, String cedula, String matricula, boolean whatsapp) {
         super(usuario, contraseña, nombres, apellidos, telefono, email, direccion, cedula, matricula, whatsapp);
-        carrito = new ArrayList();
     }
 
-    public void setCarrito(ArrayList<Producto> carrito) {
-        this.carrito = carrito;
-    }
-
-    public ArrayList<Producto> getCarrito() {
-        return carrito;
-    }
+ 
 
     public Comprador() {
     }

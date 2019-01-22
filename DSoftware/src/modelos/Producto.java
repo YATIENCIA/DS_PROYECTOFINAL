@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -10,6 +10,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
 /**
  *
@@ -92,19 +93,20 @@ public class Producto {
         return vendedor;
     }
 
-    public int getId(){
+    public int getId(Connection conn){
+        
         int i=0;
-        String query = "Select idproducto from producto where nombre="+this.nombre;
+        String query = "{call obtenerID(?,?)}";
         ResultSet rs;
-        try (Connection conn = ConexionSQL.getConnection();
-                CallableStatement stmt = conn.prepareCall(query)) {
+        try (CallableStatement stmt = conn.prepareCall(query)) {
             //Set IN parameter
-            i=stmt.getInt("idproducto");
+            stmt.setString(1, this.nombre);
+            stmt.registerOutParameter(2, Types.INTEGER);
             rs = stmt.executeQuery();
+            i=stmt.getInt("id");
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        
     return i;
     }
 }

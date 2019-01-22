@@ -11,4 +11,5 @@ package modelos;
  */
 interface PagoEstrategia {
     public void pago(int cantpro, Producto p);
+    
 }

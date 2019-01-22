@@ -24,6 +24,9 @@ insert into producto (nombre,tiempoMaxEntrega,categoria,costo,cantidadDisponible
 insert into producto (nombre,tiempoMaxEntrega,categoria,costo,cantidadDisponible,vendedor)values ("Megaminx",3,"Entretenimiento",12.5,5,"0900000004");
 insert into producto (nombre,tiempoMaxEntrega,categoria,costo,cantidadDisponible,vendedor)values ("Piraminx",3,"Entretenimiento",11.5,5,"0900000004");
 
+insert into tipodepago(descripcion)values("efectivo");
+insert into tipodepago(descripcion)values("AppMovil");
+
 insert into pedido(comprador,producto,estado,cantidad,fechaPedido)values("0900000001",1,"Pendiente",1,"2019-01-19");
 insert into pedido(comprador,producto,estado,cantidad,fechaPedido)values("0900000002",1,"Pendiente",1,"2019-01-20");
 insert into pedido(comprador,producto,estado,cantidad,fechaPedido)values("0900000002",2,"Pendiente",1,"2019-01-20");

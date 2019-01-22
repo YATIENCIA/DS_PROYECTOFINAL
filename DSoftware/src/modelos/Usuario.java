@@ -5,6 +5,12 @@
  */
 package modelos;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+
 /**
  *
  * @author IYAC
@@ -54,6 +60,7 @@ public class Usuario {
 
     public String getUsuario() {
         return usuario;
+        
     }
 
     public String getContraseña() {
@@ -131,7 +138,5 @@ public class Usuario {
     public void setWhatsapp(boolean whatsapp) {
         this.whatsapp = whatsapp;
     }
-    
-
     
 }

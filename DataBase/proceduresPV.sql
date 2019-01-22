@@ -72,6 +72,8 @@ insert into producto(idproducto, nombre, costo, cantidadDisponible, vendedor)
 values (idproductoin, nombrein, costoin, cantidadDisponiblein, vendedorin);
 end$$
 
+
+
 create procedure ingresarPedido(
 in compradorin		varchar(10),
 in productoin		int,

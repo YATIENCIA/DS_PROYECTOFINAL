@@ -12,6 +12,7 @@ import controladores.SistemaPoliVentas;
  * @author IYAC
  */
 public class EstrategiaAppMovil implements PagoEstrategia{
+    private String tipo="AppMovil";
     private String telefono;
 
      @Override
@@ -21,5 +22,25 @@ public class EstrategiaAppMovil implements PagoEstrategia{
         ConexionSQL.GuardarVenta(venta);
     
     }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
     
+     @Override
+    public String toString() {
+        return  tipo ;
+    }
 }

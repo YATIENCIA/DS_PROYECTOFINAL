@@ -7,6 +7,17 @@ from persona
 where usuario= us ;
 end $$
 
+use poliventas;
+create procedure obtenerID(in nompro varchar(15), out id int)
+begin
+select idproducto into id from producto where nombre=nompro;
+end $$
+
+
+create procedure obtenerIDestrategia(in tipop varchar(20), out idout int)
+begin
+select id into idout from tipodepago where tipop=descripcion;
+end $$
 
 create procedure eliminarCuenta(
 in us	varchar(15))

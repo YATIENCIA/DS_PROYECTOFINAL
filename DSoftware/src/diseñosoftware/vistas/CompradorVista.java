@@ -42,26 +42,24 @@ import modelos.Venta;
  *
  * @author IYAC
  */
-public class CompradorVista extends Vista{
+public class CompradorVista extends Vista {
 
     TabPane tabPane = new TabPane();
-    BorderPane Busqueda=new BorderPane();
-    BorderPane ComprasPend=new BorderPane();
-    BorderPane MasBuscados=new BorderPane();
-    
+    BorderPane Busqueda = new BorderPane();
+    BorderPane ComprasPend = new BorderPane();
+    BorderPane MasBuscados = new BorderPane();
+
     public CompradorVista(int tamañoVentana, String titulo) {
         super(tamañoVentana, titulo);
 
     }
-    
+
     @Override
-    public void CreateScene()
-    {
-        
+    public void CreateScene() {
 
         Tab tab_bs = new Tab("Búsqueda de Productos");
         Tab tab_cp = new Tab("Compras pendientes");
-        Tab tab_mb = new Tab("Productos más buscados")  ;
+        Tab tab_mb = new Tab("Productos más buscados");
         tabPane.getTabs().addAll(tab_bs, tab_cp, tab_mb);
         CrearBusqueda();
         CrearComprasPendientes();
@@ -73,182 +71,172 @@ public class CompradorVista extends Vista{
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
         menu.getChildren().add(tabPane);
-        
+
     }
-    
-    public void CrearBusqueda(){
-        VBox v=new VBox();
-        HBox h=new HBox();
-        Label lbuscar=new Label("Nombre del producto: ");
-        Button bbuscar=new Button("Buscar");
-        TextField tfnombre=new TextField();
+
+    public void CrearBusqueda() {
+        VBox v = new VBox();
+        HBox h = new HBox();
+        Label lbuscar = new Label("Nombre del producto: ");
+        Button bbuscar = new Button("Buscar");
+        TextField tfnombre = new TextField();
         h.getChildren().addAll(lbuscar, tfnombre);
         h.setAlignment(Pos.CENTER);
-        v.getChildren().addAll(h,bbuscar);
-        
+        v.getChildren().addAll(h, bbuscar);
+
         /*Cada artículo mostrado debe tener nombre, categoría, precio, tiempo máximo de entrega y
 calificación del producto y del vendedor (Escala de 5 estrellas para cada uno). Aquí mismo
 deberá permitir comprar dicho artículo./*
         
-        */
+         */
         bbuscar.setOnAction(EHBuscarProducto(v, tfnombre.getText()));
         Busqueda.setCenter(v);
         v.setSpacing(20);
         v.setAlignment(Pos.CENTER);
     }
-    
-    public EventHandler<ActionEvent> EHBuscarProducto(VBox v, String palabra){
-        EventHandler<ActionEvent> EH=new EventHandler<ActionEvent>() {
+
+    public EventHandler<ActionEvent> EHBuscarProducto(VBox v, String palabra) {
+        EventHandler<ActionEvent> EH = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                  PresentarProductos(v, palabra);  
+                PresentarProductos(v, palabra);
             }
         };
         return EH;
     }
-    
-    public void PresentarProductos(VBox v, String palabra)
-    {
-        VBox vproductos=new VBox();
-        List<Producto> lista=ConexionSQL.BuscarProductos(palabra);
-        for(Producto p: lista)
-        {
-            HBox producto=new HBox();
 
-            Label ip=new Label("Imagen del producto ");
-            VBox infoProducto=new VBox();
-            Label nombre=new Label("Nombre del producto "+p.getNombre());
-            Label cat=new Label("Categoría del producto "+p.getCategoria());
-            Label precio=new Label("Precio del producto "+p.getPrecio());
-            Label tmaxentr=new Label("Tiempo máximo de entrega del producto "+p.getTiempoMaxEntrega());
-            Label calpro=new Label("Calificación del producto "+p.getCalificacion());
-            Label calven=new Label("Vendedor  "+p.getVendedor());
-            Button comprar=new Button("Comprar producto ");
+    public void PresentarProductos(VBox v, String palabra) {
+        VBox vproductos = new VBox();
+        List<Producto> lista = ConexionSQL.BuscarProductos(palabra);
+        for (Producto p : lista) {
+            HBox producto = new HBox();
+
+            Label ip = new Label("Imagen del producto ");
+            VBox infoProducto = new VBox();
+            Label nombre = new Label("Nombre del producto " + p.getNombre());
+            Label cat = new Label("Categoría del producto " + p.getCategoria());
+            Label precio = new Label("Precio del producto " + p.getPrecio());
+            Label tmaxentr = new Label("Tiempo máximo de entrega del producto " + p.getTiempoMaxEntrega());
+            Label calpro = new Label("Calificación del producto " + p.getCalificacion());
+            Label calven = new Label("Vendedor  " + p.getVendedor());
+            Button comprar = new Button("Comprar producto ");
             infoProducto.setAlignment(Pos.CENTER);
-            infoProducto.getChildren().addAll(nombre, cat,precio,tmaxentr,calpro,calven);
+            infoProducto.getChildren().addAll(nombre, cat, precio, tmaxentr, calpro, calven);
             producto.getChildren().addAll(ip, infoProducto, comprar);
+            comprar.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    StageComprar(p);
+                }
+            });
             producto.setAlignment(Pos.CENTER);
             producto.setSpacing(110);
             vproductos.getChildren().add(producto);
         }
         vproductos.setAlignment(Pos.CENTER);
         vproductos.setSpacing(15);
-        
-        
-       ScrollPane scroll = new ScrollPane();
-       scroll.setMaxWidth(710);
+
+        ScrollPane scroll = new ScrollPane();
+        scroll.setMaxWidth(710);
         scroll.setPrefViewportHeight(400);
-       scroll.setContent(vproductos); 
+        scroll.setContent(vproductos);
 
         super.setFondoTabla(vproductos);
         Busqueda.getChildren().clear();
-        v.getChildren().addAll(scroll);  
+        v.getChildren().addAll(scroll);
         v.setAlignment(Pos.CENTER);
         Busqueda.setCenter(v);
     }
-    
-    
-    public void StageComprar(Producto p)
-    {
-        BorderPane bp=new BorderPane();
-        Stage stage=new Stage();
-        
-        Label lpro=new Label(p.getNombre()+"- categoria:"+p.getCategoria());
-        Label l=new Label("Escoja el método de pago: ");
-        ComboBox<String> c_pago=new ComboBox();
+
+    public void StageComprar(Producto p) {
+        VBox bp = new VBox();
+        Stage stage = new Stage();
+        stage.setHeight(400);
+        stage.setWidth(400);
+        Label lpro = new Label(p.getNombre() + "- categoria:" + p.getCategoria());
+        Label l = new Label("Escoja el método de pago: ");
+        ComboBox<String> c_pago = new ComboBox();
         c_pago.setPromptText("Efectivo");
-        c_pago.getItems().addAll("Efectivo","AppMovil");
-        Label lc=new Label("Cantidad");
-        TextField tc_can=new TextField();
-        
-        Button pagar=new Button("Comprar");
-        bp.setTop(lpro);
-        bp.setLeft(l);
-        bp.setTop(c_pago);
-        bp.setLeft(lc);
-        bp.setTop(tc_can);
-        bp.setBottom(pagar);
+        c_pago.getItems().addAll("Efectivo", "AppMovil");
+        Label lc = new Label("Cantidad");
+        TextField tc_can = new TextField();
+
+        Button pagar = new Button("Comprar");
+        bp.getChildren().addAll(lpro,l,c_pago,lc,tc_can,pagar);
         pagar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 stage.close();
-                ((Comprador) SistemaPoliVentas.usuario).comprar(p, c_pago.getPromptText(),Integer.parseInt(tc_can.getText()));
+                ConexionSQL.ConexionSQL();
+                ((Comprador) SistemaPoliVentas.usuario).comprar(p, c_pago.getPromptText(), Integer.parseInt(tc_can.getText()));
             }
         });
-        Scene scene=new Scene(bp, 100, 100);
+        Scene scene = new Scene(bp, 100, 100);
         stage.setScene(scene);
         stage.show();
-        
+
     }
-    
-    
-    
-     public void CrearComprasPendientes(){
-         VBox v=new VBox();
-         
+
+    public void CrearComprasPendientes() {
+        VBox v = new VBox();
+
         ObservableList<Venta> list = FXCollections.observableArrayList();
-        
+
         String query = "{call  historialComprasEstado(?,?)}";
         ResultSet rs;
-        String cedula =SistemaPoliVentas.usuario.getCedula();
-        
+        String cedula = SistemaPoliVentas.usuario.getCedula();
+
         try (Connection conn = ConexionSQL.getConnection();
-            CallableStatement stmt = conn.prepareCall(query)) {
+                CallableStatement stmt = conn.prepareCall(query)) {
             //Set IN parameter
-            stmt.setString(1, cedula);  
-            stmt.setString(2, "PENDIENTE");  
+            stmt.setString(1, cedula);
+            stmt.setString(2, "PENDIENTE");
             rs = stmt.executeQuery();
-            while(rs.next()) {
-            Venta venta = new Venta();
-            venta.setCantidad(rs.getInt("cantidad"));
-            Producto p=new Producto();
-            p.setNombre(rs.getString("nombre"));
-            p.setPrecio(rs.getDouble("precio"));
-            venta.setProducto(p);
-            list.add(venta);
-        }   
-            
+            while (rs.next()) {
+                Venta venta = new Venta();
+                venta.setCantidad(rs.getInt("cantidad"));
+                Producto p = new Producto();
+                p.setNombre(rs.getString("nombre"));
+                p.setPrecio(rs.getDouble("precio"));
+                venta.setProducto(p);
+                list.add(venta);
+            }
+
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-       
-    
-        
+
         TableView<Venta> table = Tablas.CrearVentasDescFecha(list);
-        
-        Button bbuscar=new Button("Ver historial de pedido");
+
+        Button bbuscar = new Button("Ver historial de pedido");
         v.getChildren().addAll(bbuscar, table);
         ComprasPend.setCenter(v);
         v.setSpacing(20);
         v.setAlignment(Pos.CENTER);
-        
+
     }
-     
-    public EventHandler<ActionEvent> EHHistorial(){
-        EventHandler<ActionEvent> EH=new EventHandler<ActionEvent>() {
+
+    public EventHandler<ActionEvent> EHHistorial() {
+        EventHandler<ActionEvent> EH = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                  //PresentarProductos(v);  
+                //PresentarProductos(v);  
             }
         };
         return EH;
     }
-    
-    
-    public void CrearMasBuscados()
-    {
+
+    public void CrearMasBuscados() {
         /*Este listado debe mostrar el nombre y el precio de los 15 artículos más buscados en forma de
 tabla*/
-        VBox v=new VBox();
-        
-        
+        VBox v = new VBox();
+
         ObservableList<Producto> list = FXCollections.observableArrayList();
-        
+
         //Aqui van los más buscado!!!!!!!
-        
         TableView table = Tablas.CrearProdPrecDesc(list);
         table.setEditable(true);
-        
+
         v.getChildren().addAll(table);
         v.setSpacing(20);
         v.setAlignment(Pos.CENTER);
@@ -258,6 +246,6 @@ tabla*/
 usuario ha ingresado al sistema o es un usuario desconocido. En caso de que haya ingresado al
 sistema como comprador o vendedor, le deberá aparecer la ventana de consulta del producto
 y el botón para comprar, caso contrario, deberá mostrarse la interfaz de Login.
-*/
+         */
     }
 }

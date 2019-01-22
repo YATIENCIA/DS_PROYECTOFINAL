@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,7 +24,7 @@ public class ConexionSQL {
 
     public static Connection cn;
 
-    public void ConexionSQL() {
+    public static void ConexionSQL() {
         try {
             cn = DriverManager.getConnection("jdbc:mysql://localhost/poliventas", "root", "123456789");
             System.out.println("Conexión exitosa!");
@@ -110,12 +111,12 @@ public class ConexionSQL {
         }
     }
 
-   static public List<Producto> BuscarProductos(String palabras) {
+    static public List<Producto> BuscarProductos(String palabras) {
         List<Producto> list = FXCollections.observableArrayList();
         try {
 
             //String nombre, Categoria categoria, double precio, String TiempoMaxEntrega, Calificacion calificacion, Vendedor vendedor
-            String SQL = "select nombre, categoria, costo, tiempoMaxEntrega, calificacion, vendedor from producto where (nombre like CONCAT('%'" + palabras + "'%') or categoria like CONCAT('%'" + palabras + "'%')) and eliminado=false;";
+            String SQL = "select nombre, categoria, costo, tiempoMaxEntrega, calificacion, vendedor from producto where (nombre like '%" + palabras + "%' or categoria like '%" + palabras + "%') and eliminado=false;";
             ResultSet rs = ConexionSQL.getConnection().createStatement().executeQuery(SQL);
             while (rs.next()) {
                 Producto producto = new Producto();
@@ -134,8 +135,7 @@ public class ConexionSQL {
         return list;
     }
 
-   
-   static public ObservableList<Producto> TodosLosProductos() {
+    static public ObservableList<Producto> TodosLosProductos() {
         ObservableList<Producto> list = FXCollections.observableArrayList();
         try {
 
@@ -158,9 +158,8 @@ public class ConexionSQL {
         }
         return list;
     }
-   
-   
-   static public ObservableList<Usuario> TodosLosUsuarios() {
+
+    static public ObservableList<Usuario> TodosLosUsuarios() {
         ObservableList<Usuario> list = FXCollections.observableArrayList();
         try {
 
@@ -168,7 +167,7 @@ public class ConexionSQL {
             String SQL = "select cedula,c.usuario,contraseña,rol from cuenta c, persona p where p.usuario=c.usuario and c.eliminado=false;";
             ResultSet rs = ConexionSQL.getConnection().createStatement().executeQuery(SQL);
             while (rs.next()) {
-                Usuario usuario=new Usuario();
+                Usuario usuario = new Usuario();
                 usuario.setCedula(rs.getString("cedula"));
                 usuario.setUsuario(rs.getString("usuario"));
                 usuario.setContraseña(rs.getString("contraseña"));
@@ -181,23 +180,43 @@ public class ConexionSQL {
         }
         return list;
     }
-   
-   static public void GuardarVenta(Venta v) {
-   String query = "{call ingresarVenta(?,?,?,?,?)}";
-        ResultSet rs;
-        try (Connection conn = ConexionSQL.getConnection();
-                CallableStatement stmt = conn.prepareCall(query)) {
-            //Set IN parameter
 
+    static public void GuardarVenta(Venta v) {
+        try {
+            String query = "{call ingresarPedido(?,?,?,?,?)}";
+            ResultSet rs;
+            Connection conn = ConexionSQL.getConnection();
+            CallableStatement stmt = conn.prepareCall(query);
+            //Set IN parameter
             stmt.setString(1, SistemaPoliVentas.usuario.getCedula());
-            stmt.setInt(2, v.getProducto().getId());
+            stmt.setInt(2, v.getProducto().getId(conn));
             stmt.setInt(3, v.getCantidad());
             stmt.setString(4, v.getEstado().toString());
-            stmt.setString(5, v.getEstrategia().toString());
+            stmt.setInt(5, ConexionSQL.getID(v.getEstrategia().toString()));
             rs = stmt.executeQuery();
 
         } catch (SQLException ex) {
+            System.out.println("se cae el programa");
             System.out.println(ex.getMessage());
         }
+    }
+    
+    static public int getID(String estrategia)
+    {
+        int i=0;
+         try {
+            String query = "{call obtenerIDestrategia(?,?)}";
+            ResultSet rs;
+            Connection conn = ConexionSQL.getConnection();
+            CallableStatement stmt = conn.prepareCall(query);
+            //Set IN parameter
+            stmt.setString(1, estrategia);
+            stmt.registerOutParameter(2, Types.INTEGER);
+            rs = stmt.executeQuery();
+            i=stmt.getInt("idout");
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+      return i;
     }
 }

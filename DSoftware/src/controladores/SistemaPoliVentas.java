@@ -31,14 +31,14 @@ import modelos.Vendedor;
 public class SistemaPoliVentas {
 
     public static Usuario usuario;
-    public static Vista vista=null;
+    public static Vista vista;
 
     public static void IngresarAlSistema(String Usuario, String contraseña) {
         vista=null;
         //Búsqueda en la base
         usuario = ObtenerUsuario(Usuario, contraseña);
         //Vista vista = new AdministradorVista(50, "AV");
-        
+        System.out.println("cedula de usuario registrado"+usuario.getCedula());
         if (usuario instanceof Vendedor) {
             VendedorVista vv = new VendedorVista(50, "CV");
             vista = vv;
@@ -72,11 +72,12 @@ public class SistemaPoliVentas {
         }
         
     }
+    
+    
 
     public static Usuario ObtenerUsuario(String usuario, String contraseña) {
         String query = "{call obtenerRol(?,?,?)}";
         ResultSet rs;
-        Usuario u = new Usuario();
 
         try (Connection conn = ConexionSQL.getConnection();
                 CallableStatement stmt = conn.prepareCall(query)) {
@@ -87,16 +88,16 @@ public class SistemaPoliVentas {
             stmt.registerOutParameter(3, Types.VARCHAR);
             rs = stmt.executeQuery();
             String rol = stmt.getString(3);
-            u = getUsuario(rol);
-
+            Usuario u = getUsuario(rol, usuario, contraseña);
+            return u;
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        return u;
+        return null;
     }
 
-    private static Usuario getUsuario(String rol) {
-        Usuario usuario = new Usuario();
+    private static Usuario getUsuario(String rol, String usu, String contraseña) {
+        Usuario usuario=new Usuario();
         if (rol != null) {
             switch (rol) {
                 case "Vendedor":
@@ -110,7 +111,37 @@ public class SistemaPoliVentas {
                     break;
             }
         }
-
+        usuario.setUsuario(usu);
+        usuario.setContraseña(contraseña);
+        usuario=getByUsuario(usuario);
+        return usuario;
+    }
+    
+    
+    private static Usuario getByUsuario(Usuario usuario)
+    {
+        String query = "{call obtenerCedula(?,?,?,?)}";
+        ResultSet rs;
+        try (Connection conn = ConexionSQL.getConnection();
+                CallableStatement stmt = conn.prepareCall(query)) {
+            System.out.println("usuario obtenida"+ usuario.getUsuario());
+            //Set IN parameter
+            stmt.setString(1, usuario.getUsuario());
+            stmt.registerOutParameter(2, Types.VARCHAR);
+            stmt.registerOutParameter(3, Types.VARCHAR);
+            stmt.registerOutParameter(4, Types.VARCHAR);
+            
+            rs = stmt.executeQuery();
+            String cedula=stmt.getString(2);
+            System.out.println("Cdul obtenida"+cedula);
+            String nombres=stmt.getString(3);
+            String apellidos=stmt.getString(4);
+            usuario.setCedula(cedula);
+            usuario.setNombres(nombres);
+            usuario.setApellidos(apellidos);
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
         return usuario;
     }
 }
