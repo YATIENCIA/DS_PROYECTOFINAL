@@ -109,4 +109,9 @@ public class Producto {
         }
     return i;
     }
+
+    @Override
+    public String toString() {
+        return "Producto{" + "nombre=" + nombre + ", categoria=" + categoria.getNombre() + ", precio=" + precio + ", TiempoMaxEntrega=" + TiempoMaxEntrega + ", calificacion=" + calificacion + ", vendedor=" + vendedor + '}';
+    }
 }

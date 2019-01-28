@@ -60,16 +60,17 @@ begin
 insert into persona(cedula, nombres,apellidos,numero,correo,direccion,matricula,saldo,usuario) values (cedulain, nombresin,apellidosin,numeroin,correoin,direccionin,matriculain,saldoin,usuarioin);
 end$$
 
-#drop procedure ingresarProducto;
+
 create procedure ingresarProducto(
-in idproductoin			int,
 in nombrein			varchar(15),
+in tiempoMaxEntregain int,
+in categoriain varchar(100),
 in costoin				double,
 in cantidadDisponiblein	int,
 in vendedorin			varchar(10))
 begin
-insert into producto(idproducto, nombre, costo, cantidadDisponible, vendedor) 
-values (idproductoin, nombrein, costoin, cantidadDisponiblein, vendedorin);
+insert into producto(nombre,tiempoMaxEntrega,categoria, costo, cantidadDisponible, vendedor) 
+values (nombrein, tiempoMaxEntregain,categoriain, costoin, cantidadDisponiblein, vendedorin);
 end$$
 
 

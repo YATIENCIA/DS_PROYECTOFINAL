@@ -18,7 +18,7 @@ insert into persona values ("0900000006","Kevin","Gomez","0900000066","kjgomez@e
 insert into persona values ("0900000007","Ysabel","Atiencia","0900000077","yatienci@espol.edu.ec","suroeste","201608005",0,false,"yatienci");
                             
 insert into producto (nombre,tiempoMaxEntrega,categoria,costo,cantidadDisponible,vendedor)values ("Cubo 3x3",3,"Entrenimiento",10,5,"0900000004");
-insert into producto (nombre,tiempoMaxEntrega,categoria,costo,cantidadDisponible,vendedor)values ("Audifonos Huawei",2,"Tecnologia",7.50,10,"0900000005");
+insert into producto (nombre,tiempoMaxEntrega,categoria,costo,cantidadDisponible,vendedor)values ("Audifonos",2,"Tecnologia",7.50,10,"0900000005");
 insert into producto (nombre,tiempoMaxEntrega,categoria,costo,cantidadDisponible,vendedor)values ("Samsung J7",10,"Tecnologia",260,1,"0900000005");
 insert into producto (nombre,tiempoMaxEntrega,categoria,costo,cantidadDisponible,vendedor)values ("SD 32gb",1,"Tecnologia",17.5,20,"0900000005");
 insert into producto (nombre,tiempoMaxEntrega,categoria,costo,cantidadDisponible,vendedor)values ("Megaminx",3,"Entretenimiento",12.5,5,"0900000004");

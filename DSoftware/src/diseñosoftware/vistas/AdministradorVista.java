@@ -80,10 +80,12 @@ public class AdministradorVista extends Vista {
 
         //Creo filas modelo
         ObservableList<Usuario> list =ConexionSQL.TodosLosUsuarios();
+        System.out.println(list.size());
         for(Usuario u: list)
         {
             System.out.println(u);
         }
+        System.out.println("SALI");
         TableView table = Tablas.CrearUsuario(list);
 
         Button CrearUsu = new Button("Crear nuevo usuario");
@@ -152,7 +154,8 @@ public class AdministradorVista extends Vista {
         MenuItem mi2 = new MenuItem("Eliminar");
         cm.getItems().add(mi2);
 
-
+        CrearPro.setOnAction(e-> crearNuevoProducto());
+        
         table.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
             @Override
@@ -160,8 +163,8 @@ public class AdministradorVista extends Vista {
                 if (t.getButton() == MouseButton.SECONDARY) {
                     cm.show(table, t.getScreenX(), t.getScreenY());
                      Producto producto = (Producto) table.getSelectionModel().getSelectedItem();
-                    mi1.setOnAction(NotificacionModificarProducto("producto",producto, table));
-                    
+                    //mi1.setOnAction(NotificacionModificarProducto("producto",producto, table));
+                    mi1.setOnAction(e->bModificarProducto(producto));
                    mi2.setOnAction(NotificacionEliminarProducto("producto",producto, table));
                 }
             }
@@ -213,9 +216,9 @@ public class AdministradorVista extends Vista {
         grid.add(new Label("Teléfono:"), 1, 5);
         grid.add(new Label("email:"), 1, 6);
         grid.add(new Label("Dirección:"), 1, 7);
-        grid.add(new Label("Whatsapp:"), 1, 8);
+        //grid.add(new Label("Whatsapp:"), 1, 8);
         grid.add(new Label("Matricula:"), 1, 9);
-        grid.add(new Label("Perfil:"), 1, 10);
+        //grid.add(new Label("Perfil:"), 1, 10);
         
         TextField c_nombre = new TextField();
         TextField c_apellido = new TextField();
@@ -237,7 +240,7 @@ public class AdministradorVista extends Vista {
         grid.add(c_direccion, 4, 7);
         grid.add(c_mat, 4, 9);
 
-        grid.add(modificar, 0, 9);
+        grid.add(modificar, 1, 10);
 
         modificar.setOnAction(e-> {
             String tnombres= c_nombre.getText();
@@ -269,10 +272,17 @@ public class AdministradorVista extends Vista {
         Label lNombreProducto = new Label("Nombre");
         Label lDescripcionProducto = new Label("Descripcion");
         Label lPecioProducto = new Label("Precio");
-        
+               
         TextField tNombreProducto= new TextField();
         TextField tDescripcionProducto= new TextField();
         TextField tPrecioProducto= new TextField();
+        
+        Label ltiempoMaxEntrega= new Label("Tiempo maximo de entrega");
+        Label lCategoria= new Label("Categoria");
+        Label lCantidadDisponible= new Label("Cantidad disponible");
+        TextField ttiempoMaxEntrega= new TextField();
+        TextField tCategoria= new TextField();
+        TextField tCantidadDisponible= new TextField();
         
         grid.add(lNombreProducto, 0, 0);
         grid.add(lDescripcionProducto, 0, 1);
@@ -281,18 +291,30 @@ public class AdministradorVista extends Vista {
         grid.add(tDescripcionProducto, 1, 1);
         grid.add(tPrecioProducto, 1, 2);
         
+        grid.add(ltiempoMaxEntrega,0,3);
+        grid.add(lCategoria,0,4);
+        grid.add(lCantidadDisponible,0,5);
+        grid.add(ttiempoMaxEntrega,1,3);
+        grid.add(tCategoria,1,4);
+        grid.add(tCantidadDisponible,1,5);
+        
         Button aceptar = new Button("ACEPTAR");
         aceptar.setOnAction(e->{
             String nombre= tNombreProducto.getText();
             String descripcion=tDescripcionProducto.getText();
             String precio=tPrecioProducto.getText();
             
-            String[] info= {nombre,descripcion,precio};
+            String tiempoMaxEntrega= ttiempoMaxEntrega.getText();
+            String categoria= tCategoria.getText();
+            String cantidadDisponible= tCantidadDisponible.getText();
+            
+            
+            String[] info= {nombre,descripcion,precio,tiempoMaxEntrega,categoria,cantidadDisponible};
             controlador.modificarProducto(producto, info);
             
                 });
 
-        grid.add(aceptar,0,4);
+        grid.add(aceptar,0,6);
         
         Scene scene2 = new Scene(grid,250,250);
 
@@ -304,6 +326,66 @@ public class AdministradorVista extends Vista {
        
         
         
+    }
+    
+    public void crearNuevoProducto(){
+        Stage stageDialog = new Stage();
+         //crear el stageDialog para la ventana de dialogo
+        stageDialog.setTitle("CREAR NUEVO PRODUCTO");
+        //decirle al stageDialog que se comporte como un pop-up (Modal)
+        //stageDialog.initModality(Modality.WINDOW_MODAL);
+        
+        GridPane grid= new GridPane();
+        Label lNombreProducto = new Label("Nombre");
+        Label lDescripcionProducto = new Label("Descripcion");
+        Label lPecioProducto = new Label("Precio");
+        
+        Label ltiempoMaxEntrega= new Label("Tiempo maximo de entrega");
+        Label lCategoria= new Label("Categoria");
+        Label lCantidadDisponible= new Label("Cantidad disponible");
+        
+        TextField tNombreProducto= new TextField();
+        TextField tDescripcionProducto= new TextField();
+        TextField tPrecioProducto= new TextField();
+        
+        TextField ttiempoMaxEntrega= new TextField();
+        TextField tCategoria= new TextField();
+        TextField tCantidadDisponible= new TextField();
+        
+        grid.add(lNombreProducto, 0, 0);
+        grid.add(lDescripcionProducto, 0, 1);
+        grid.add(lPecioProducto, 0, 2);
+        grid.add(tNombreProducto, 1, 0);
+        grid.add(tDescripcionProducto, 1, 1);
+        grid.add(tPrecioProducto, 1, 2);
+        
+        grid.add(ltiempoMaxEntrega,0,3);
+        grid.add(lCategoria,0,4);
+        grid.add(lCantidadDisponible,0,5);
+        grid.add(ttiempoMaxEntrega,1,3);
+        grid.add(tCategoria,1,4);
+        grid.add(tCantidadDisponible,1,5);
+        
+        
+        Button aceptar = new Button("ACEPTAR");
+        aceptar.setOnAction(e->{
+            String nombre= tNombreProducto.getText();
+            String descripcion=tDescripcionProducto.getText();
+            String precio=tPrecioProducto.getText();
+            
+            String[] info= {nombre,descripcion,precio};
+            //controlador.modificarProducto(producto, info);
+            
+                });
+
+        grid.add(aceptar,0,6);
+        
+        Scene scene2 = new Scene(grid,250,250);
+
+        stageDialog.setScene(scene2);
+                
+        // Mostrar el dialogo y esperar hasta que el usuario cierra la venta
+        stageDialog.showAndWait();
     }
     
 }

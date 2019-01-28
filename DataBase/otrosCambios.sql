@@ -30,3 +30,6 @@ join (select count(numero) as cantidad, idProd
         group by idProd) sq on producto.idproducto=sq.idProd
 order by cantidad desc
 limit 15 ;
+
+
+

@@ -7,7 +7,7 @@ from persona
 where usuario= us ;
 end $$
 
-use poliventas;
+
 create procedure obtenerID(in nompro varchar(15), out id int)
 begin
 select idproducto into id from producto where nombre=nompro;
@@ -30,3 +30,37 @@ in id	varchar(15))
 begin
 update producto set eliminado=true  where id=idproducto;
 end$$
+
+
+
+create procedure modificarUsuario(
+in cedulain		varchar(10) ,
+in nombresin		varchar(30),
+in apellidosin	varchar(30),
+in numeroin		varchar(10),
+in correoin		varchar(25),
+in direccionin	varchar(50),
+in matriculain 	varchar(10),
+in usuarioin		varchar(15))
+begin
+update persona
+set cedula=cedulain, nombres=nombresin,apellidos=apellidosin,numero=numeroin,correo=correoin,direccion=direccionin,
+	matricula=matriculain,usuario=usuarioin
+where cedula=cedulain;
+end$$
+
+create procedure modificarProducto(
+in nombrein			varchar(15),
+in tiempoMaxEntregain int,
+in categoriain varchar(100),
+in costoin				double,
+in cantidadDisponiblein	int,
+in vendedorin			varchar(10))
+begin
+update producto
+set nombre=nombrein, tiempoMaxEntrega=tiempoMaxEntregain,categoria=cateogriain,costo=costoin,
+	cantidadDisponible=cantidadDisponiblein, vendedor=vendedorin
+where nombre=nombrein;
+end$$
+
+
