@@ -38,7 +38,7 @@ public class Vista {
 
     TextField tname = new TextField();
     TextField tcontra = new TextField();
-    static Scene scene;
+    protected Scene scene;
     protected int tamañoVentana;
     protected String titulo;
     protected StackPane menu = new StackPane();

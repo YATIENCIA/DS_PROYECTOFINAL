@@ -26,17 +26,17 @@ public class ConexionSQL {
 
     public static void ConexionSQL() {
         try {
-            cn = DriverManager.getConnection("jdbc:mysql://localhost/poliventas", "root", "123456789");
+            cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/poliventas", "root", "vegeta10");
             System.out.println("Conexión exitosa!");
         } catch (SQLException ex) {
-            System.out.println("ERROR");
+            System.out.print(ex.getMessage());
         }
     }
 
     public static Connection getConnection() {
         try {
             if (cn.isClosed()) {
-                cn = DriverManager.getConnection("jdbc:mysql://localhost/poliventas", "root", "123456789");
+                cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/poliventas", "root", "vegeta10");
 
             }
         } catch (SQLException ex) {
