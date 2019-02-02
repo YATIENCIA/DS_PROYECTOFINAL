@@ -83,6 +83,8 @@ public class ConexionSQL {
         }
     }
 
+  
+
     public static void CambiarEstadoCuenta(String usuario) {
         String query = "{call eliminarCuenta(?)}";
         ResultSet rs;
@@ -90,6 +92,20 @@ public class ConexionSQL {
                 CallableStatement stmt = conn.prepareCall(query)) {
             //Set IN parameter
             stmt.setString(1, usuario);
+            rs = stmt.executeQuery();
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    public static void AñadirABusqueda(String palabra) {
+        String query = "{call busquedaProd(?)}";
+        ResultSet rs;
+        try (Connection conn = ConexionSQL.getConnection();
+                CallableStatement stmt = conn.prepareCall(query)) {
+            //Set IN parameter
+            stmt.setString(1, palabra);
             rs = stmt.executeQuery();
 
         } catch (SQLException ex) {
@@ -110,68 +126,68 @@ public class ConexionSQL {
             System.out.println(ex.getMessage());
         }
     }
-    
-    /**
-    static public List<Producto> ProductosMasBuscados(String palabras){
-        
-        List<Producto> list = FXCollections.observableArrayList();
-        try {
 
-            //String nombre, Categoria categoria, double precio, String TiempoMaxEntrega, Calificacion calificacion, Vendedor vendedor
-            String SQL = "select nombre, categoria, where (nombre like '%" + palabras + "%' or categoria like '%" + palabras + "%') and eliminado=false;";
-            ResultSet rs = ConexionSQL.getConnection().createStatement().executeQuery(SQL);
+    static public ObservableList<Producto> ProductosMasBuscados() {
+        ObservableList<Producto> list = FXCollections.observableArrayList();
+   String query = "select nombre, costo, sq.cantidad as cantidadBusqueda "
+                + "from producto join (select count(numero) as cantidad, idProd from busqueda "
+                + "group by idProd) sq on producto.idproducto=sq.idProd order by cantidad desc limit 15;";
+
+        try {
+            Connection conn = ConexionSQL.getConnection();
+            CallableStatement stmt = conn.prepareCall(query);
+            ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 Producto producto = new Producto();
                 producto.setNombre(rs.getString("nombre"));
-                producto.setCategoria(new Categoria(rs.getString("categoria")));
+                producto.setPrecio(rs.getDouble("costo"));
                 list.add(producto);
             }
-
         } catch (SQLException ex) {
             Logger.getLogger(ConexionSQL.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
-    
-    
-    }*/
-    
-    
-    static public ObservableList<Producto> ProductosMasBuscadosQuemado(){
-        
-        ObservableList<Producto> list = FXCollections.observableArrayList();
-        
-            Producto p1 = new Producto();
-            p1.setNombre("Camiseta");
-            p1.setCategoria(null);
-            
-            Producto p2 = new Producto();
-            p2.setNombre("Pantaloneta");
-            p2.setCategoria(null);
-            
-            list.add(p1);
-            list.add(p2);
-        
-        return list;
-    
-    
     }
-    
-    
-    
+/*
+    static public ObservableList<Producto> ProductosMasBuscadosQuemado() {
+
+        ObservableList<Producto> list = FXCollections.observableArrayList();
+
+        Producto p1 = new Producto();
+        p1.setNombre("Camiseta");
+        p1.setCategoria(null);
+
+        Producto p2 = new Producto();
+        p2.setNombre("Pantaloneta");
+        p2.setCategoria(null);
+
+        list.add(p1);
+        list.add(p2);
+
+        return list;
+
+    }
+*/
     static public List<Producto> BuscarProductos(String palabras) {
+        System.out.println("palabras   "+palabras);
         List<Producto> list = FXCollections.observableArrayList();
         try {
 
-            //String nombre, Categoria categoria, double precio, String TiempoMaxEntrega, Calificacion calificacion, Vendedor vendedor
-            String SQL = "select nombre, categoria, costo, tiempoMaxEntrega, calificacion, vendedor from producto where (nombre like '%" + palabras + "%' or categoria like '%" + palabras + "%') and eliminado=false;";
+              String SQL = "select nombre, categoria, costo, tiempoMaxEntrega, "
+                    + "calificacion, vendedor from producto where (nombre like '%" + palabras + "%' "
+                    + "or categoria like '%" + palabras + "%') and eliminado=false;";
+            
             ResultSet rs = ConexionSQL.getConnection().createStatement().executeQuery(SQL);
             while (rs.next()) {
+                System.out.println("RRKFF"+rs.toString());
                 Producto producto = new Producto();
                 producto.setNombre(rs.getString("nombre"));
                 producto.setCategoria(new Categoria(rs.getString("categoria")));
                 producto.setPrecio(rs.getDouble("costo"));
+               
                 producto.setTiempoMaxEntrega(rs.getString("tiempoMaxEntrega"));
                 producto.setCalificacion(new Calificacion(rs.getInt("calificacion")));
+                System.out.println("VENDEDOROROROR"+rs.getString("vendedor"));
                 producto.setVendedor(new Vendedor(rs.getString("vendedor")));
                 list.add(producto);
             }
@@ -186,7 +202,6 @@ public class ConexionSQL {
         ObservableList<Producto> list = FXCollections.observableArrayList();
         try {
 
-            //String nombre, Categoria categoria, double precio, String TiempoMaxEntrega, Calificacion calificacion, Vendedor vendedor
             String SQL = "select nombre, categoria, costo, TiempoMaxEntrega, calificacion, vendedor from producto where eliminado=false;";
             ResultSet rs = ConexionSQL.getConnection().createStatement().executeQuery(SQL);
             while (rs.next()) {
@@ -247,11 +262,10 @@ public class ConexionSQL {
             System.out.println(ex.getMessage());
         }
     }
-    
-    static public int getID(String estrategia)
-    {
-        int i=0;
-         try {
+
+    static public int getID(String estrategia) {
+        int i = 0;
+        try {
             String query = "{call obtenerIDestrategia(?,?)}";
             ResultSet rs;
             Connection conn = ConexionSQL.getConnection();
@@ -260,10 +274,10 @@ public class ConexionSQL {
             stmt.setString(1, estrategia);
             stmt.registerOutParameter(2, Types.INTEGER);
             rs = stmt.executeQuery();
-            i=stmt.getInt("idout");
+            i = stmt.getInt("idout");
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-      return i;
+        return i;
     }
 }

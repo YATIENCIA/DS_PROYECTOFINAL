@@ -25,6 +25,8 @@ public class main extends Application{
     @Override
     public void start(Stage stage) throws Exception {
        
+        String p="   ";
+        System.out.println(p.length());
         //Conexion SQL
        ConexionSQL cs=new ConexionSQL();
        cs.ConexionSQL();

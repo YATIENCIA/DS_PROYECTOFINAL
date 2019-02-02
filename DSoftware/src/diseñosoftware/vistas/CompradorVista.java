@@ -6,6 +6,7 @@
 package diseñosoftware.vistas;
 
 import controladores.SistemaPoliVentas;
+import static diseñosoftware.vistas.ProductosMasBuscadosVista.VerificarUsuario;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -17,6 +18,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -27,11 +29,14 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import modelos.Categoria;
 import modelos.Comprador;
 import modelos.ConexionSQL;
 import modelos.Producto;
@@ -89,29 +94,22 @@ calificación del producto y del vendedor (Escala de 5 estrellas para cada uno).
 deberá permitir comprar dicho artículo./*
         
          */
-        bbuscar.setOnAction(EHBuscarProducto(v, tfnombre.getText()));
+        bbuscar.setOnAction(e -> {
+            PresentarProductos(v, tfnombre.getText());
+            ConexionSQL.AñadirABusqueda(tfnombre.getText());
+        });
         Busqueda.setCenter(v);
         v.setSpacing(20);
         v.setAlignment(Pos.CENTER);
     }
 
-    public EventHandler<ActionEvent> EHBuscarProducto(VBox v, String palabra) {
-        EventHandler<ActionEvent> EH = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                PresentarProductos(v, palabra);
-            }
-        };
-        return EH;
-    }
-
     public void PresentarProductos(VBox v, String palabra) {
+
+        ScrollPane scroll = new ScrollPane();
         VBox vproductos = new VBox();
         List<Producto> lista = ConexionSQL.BuscarProductos(palabra);
         for (Producto p : lista) {
             HBox producto = new HBox();
-
-            Label ip = new Label("Imagen del producto ");
             VBox infoProducto = new VBox();
             Label nombre = new Label("Nombre del producto " + p.getNombre());
             Label cat = new Label("Categoría del producto " + p.getCategoria());
@@ -122,7 +120,7 @@ deberá permitir comprar dicho artículo./*
             Button comprar = new Button("Comprar producto ");
             infoProducto.setAlignment(Pos.CENTER);
             infoProducto.getChildren().addAll(nombre, cat, precio, tmaxentr, calpro, calven);
-            producto.getChildren().addAll(ip, infoProducto, comprar);
+            producto.getChildren().addAll(infoProducto, comprar);
             comprar.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
@@ -135,20 +133,18 @@ deberá permitir comprar dicho artículo./*
         }
         vproductos.setAlignment(Pos.CENTER);
         vproductos.setSpacing(15);
-
-        ScrollPane scroll = new ScrollPane();
         scroll.setMaxWidth(710);
         scroll.setPrefViewportHeight(400);
         scroll.setContent(vproductos);
 
         super.setFondoTabla(vproductos);
         Busqueda.getChildren().clear();
-        v.getChildren().addAll(scroll);
-        v.setAlignment(Pos.CENTER);
-        Busqueda.setCenter(v);
+
+        Busqueda.setTop(v);
+        Busqueda.setCenter(scroll);
     }
 
-    public void StageComprar(Producto p) {
+    public static void StageComprar(Producto p) {
         VBox bp = new VBox();
         Stage stage = new Stage();
         stage.setHeight(400);
@@ -162,7 +158,7 @@ deberá permitir comprar dicho artículo./*
         TextField tc_can = new TextField();
 
         Button pagar = new Button("Comprar");
-        bp.getChildren().addAll(lpro,l,c_pago,lc,tc_can,pagar);
+        bp.getChildren().addAll(lpro, l, c_pago, lc, tc_can, pagar);
         pagar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -197,7 +193,8 @@ deberá permitir comprar dicho artículo./*
                 venta.setCantidad(rs.getInt("cantidad"));
                 Producto p = new Producto();
                 p.setNombre(rs.getString("nombre"));
-                p.setPrecio(rs.getDouble("precio"));
+                p.setPrecio(rs.getDouble("costo"));
+                p.setCategoria(new Categoria("categoria"));
                 venta.setProducto(p);
                 list.add(venta);
             }
@@ -230,13 +227,23 @@ deberá permitir comprar dicho artículo./*
         /*Este listado debe mostrar el nombre y el precio de los 15 artículos más buscados en forma de
 tabla*/
         VBox v = new VBox();
+        String sql = "";
 
-        ObservableList<Producto> list = ConexionSQL.ProductosMasBuscadosQuemado();
+        ObservableList<Producto> list = ConexionSQL.ProductosMasBuscados();
 
         //Aqui van los más buscado!!!!!!!
-        TableView table = Tablas.CrearProdPrecDesc(list);
+        TableView table = Tablas.CrearProdPrec(list);
         table.setEditable(true);
+        table.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
+            @Override
+            public void handle(MouseEvent t) {
+                if (t.getButton() == MouseButton.PRIMARY) {
+                    Producto producto = (Producto) table.getSelectionModel().getSelectedItem();
+                    VerificarUsuario(producto);
+                }
+            }
+        });
         v.getChildren().addAll(table);
         v.setSpacing(20);
         v.setAlignment(Pos.CENTER);
@@ -248,4 +255,5 @@ sistema como comprador o vendedor, le deberá aparecer la ventana de consulta de
 y el botón para comprar, caso contrario, deberá mostrarse la interfaz de Login.
          */
     }
+
 }

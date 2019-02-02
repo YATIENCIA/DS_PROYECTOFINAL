@@ -40,6 +40,24 @@ public class Tablas {
         return table;
     }
     
+     public static TableView<Producto> CrearProdPrec(ObservableList<Producto> list) {
+        
+        TableView<Producto> table = new TableView<Producto>();
+        TableColumn<Producto, String> NameCol //
+                = new TableColumn<Producto, String>("Nombre del producto");
+        TableColumn<Producto, Double> DescCol//
+                = new TableColumn<Producto, Double>("Precio");
+
+        NameCol.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        DescCol.setCellValueFactory(new PropertyValueFactory<>("precio"));
+        NameCol.setSortType(TableColumn.SortType.DESCENDING);
+        table.setItems(list);
+
+        table.getColumns().addAll(NameCol, DescCol);
+
+        return table;
+    }
+    
     public static TableView<Producto> CrearProdPrecDesc(ObservableList<Producto> list) {
         
         TableView<Producto> table = new TableView<Producto>();
@@ -69,18 +87,15 @@ public class Tablas {
     table.setEditable(true);
      TableColumn<Venta, String> PedCol//
                 = new TableColumn<Venta, String>("Producto");
-        TableColumn<Venta, String> DescCol//
-                = new TableColumn<Venta, String>("Cantidad");
-        TableColumn<Venta, String> DateCol//
-                = new TableColumn<Venta, String>("Estado");
+        TableColumn<Venta, Integer> DescCol//
+                = new TableColumn<Venta, Integer>("Cantidad");
+
         
         PedCol.setCellValueFactory(new PropertyValueFactory<>("producto"));
         DescCol.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
-        DateCol.setCellValueFactory(new PropertyValueFactory<>("estado"));
-        DateCol.setSortType(TableColumn.SortType.DESCENDING);
         table.setItems(list);
 
-        table.getColumns().addAll(PedCol, DescCol, DateCol);
+        table.getColumns().addAll(PedCol, DescCol);
 
         return table; 
   }

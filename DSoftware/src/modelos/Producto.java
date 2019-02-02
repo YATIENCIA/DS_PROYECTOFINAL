@@ -112,6 +112,6 @@ public class Producto {
 
     @Override
     public String toString() {
-        return "Producto{" + "nombre=" + nombre + ", categoria=" + categoria.getNombre() + ", precio=" + precio + ", TiempoMaxEntrega=" + TiempoMaxEntrega + ", calificacion=" + calificacion + ", vendedor=" + vendedor + '}';
+        return nombre;
     }
 }
