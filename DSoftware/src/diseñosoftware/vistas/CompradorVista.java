@@ -231,7 +231,7 @@ deberá permitir comprar dicho artículo./*
 tabla*/
         VBox v = new VBox();
 
-        ObservableList<Producto> list = FXCollections.observableArrayList();
+        ObservableList<Producto> list = ConexionSQL.ProductosMasBuscadosQuemado();
 
         //Aqui van los más buscado!!!!!!!
         TableView table = Tablas.CrearProdPrecDesc(list);
