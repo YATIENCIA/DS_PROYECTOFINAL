@@ -271,7 +271,7 @@ public class AdministradorVista extends Vista {
         modificar.setOnAction(e-> {
             if(VerificacionDatosIngresados(c_usuario.getText(),c_contrasena.getText(),c_nombre.getText(),c_apellido.getText(),c_telefono.getText(),c_email.getText(),c_direccion.getText(),c_cedula.getText(),c_mat.getText())){
                 
-                //ConexionSQL.ModificarPersonaALaBase(c_usuario.getText(),c_contraseña.getText(),c_nombre.getText(),c_apellido.getText(),c_telefono.getText(),c_email.getText(),c_direccion.getText(),c_cedula.getText(),c_mat.getText(),false);
+                ConexionSQL.ModificarPersonaEnLaBase(c_usuario.getText(),c_contrasena.getText(),c_nombre.getText(),c_apellido.getText(),c_telefono.getText(),c_email.getText(),c_direccion.getText(),c_cedula.getText(),c_mat.getText(),false);
                 System.out.println("procedure de actualizacion");
                 alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Usuario modificado");
