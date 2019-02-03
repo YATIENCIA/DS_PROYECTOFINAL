@@ -34,6 +34,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modelos.ConexionSQL;
 import modelos.Producto;
@@ -182,6 +183,7 @@ public class AdministradorVista extends Vista {
     public void bmodificarUsuario(Usuario usuario){
         System.out.println(usuario.getUsuario());
         stageDialog = new Stage();
+        stageDialog.initModality(Modality.APPLICATION_MODAL);
          //crear el stageDialog para la ventana de dialogo
         stageDialog.setTitle("Modificar USUARIO");
         //decirle al stageDialog que se comporte como un pop-up (Modal)
@@ -195,7 +197,7 @@ public class AdministradorVista extends Vista {
         grid.add(aceptar,0,4);
         
         Scene scene2 = new Scene(grid,550,550);
-        
+        stageDialog.setResizable(false);
         stageDialog.setScene(scene2);
         
         modificarUsuarioVista(usuario,scene2);
@@ -316,7 +318,8 @@ public class AdministradorVista extends Vista {
     }
 
     public void bModificarProducto(Producto producto){
-        Stage stageDialog = new Stage();
+        stageDialog = new Stage();
+        stageDialog.initModality(Modality.APPLICATION_MODAL);
          //crear el stageDialog para la ventana de dialogo
         stageDialog.setTitle("MODIFICAR PRODUCTO");
         //decirle al stageDialog que se comporte como un pop-up (Modal)
@@ -351,6 +354,8 @@ public class AdministradorVista extends Vista {
         grid.add(ttiempoMaxEntrega,1,3);
         grid.add(tCategoria,1,4);
         grid.add(tCantidadDisponible,1,5);
+        grid.setVgap(10);
+        grid.setAlignment(Pos.CENTER);
         
         Button aceptar = new Button("ACEPTAR");
         aceptar.setOnAction(e->{
@@ -367,13 +372,13 @@ public class AdministradorVista extends Vista {
             controlador.modificarProducto(producto, info);
             
                 });
-
+        
         grid.add(aceptar,0,6);
         
-        Scene scene2 = new Scene(grid,250,250);
-
+        Scene scene2 = new Scene(grid,550,550);
+        stageDialog.setResizable(false);
         stageDialog.setScene(scene2);
-                
+        
         // Mostrar el dialogo y esperar hasta que el usuario cierra la venta
         stageDialog.showAndWait();
         
