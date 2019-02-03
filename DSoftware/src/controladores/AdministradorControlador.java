@@ -22,7 +22,7 @@ public class AdministradorControlador {
     public void modificarUsuario(Usuario usuario,String[] info){
         System.out.println("VIEJO USUARIO:\n"+usuario);
         usuario.setUsuario(info[0]);
-        usuario.setContraseña(info[1]);
+        usuario.setContrasena(info[1]);
         usuario.setNombres(info[2]);
         usuario.setApellidos(info[3]);
         usuario.setTelefono(info[4]);
