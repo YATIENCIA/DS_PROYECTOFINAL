@@ -181,7 +181,7 @@ public class Vista {
                 alert.setContentText("¿Está seguro que desea eliminar el "+elemento+"?");
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK){
-                    ConexionSQL.CambiarEstadoProducto(producto.getNombre());
+                    ConexionSQL.CambiarEstadoProducto(producto.getId(ConexionSQL.cn));
                     table.getItems().remove(producto);
                 } else {
                     // ... user chose CANCEL or closed the dialog
