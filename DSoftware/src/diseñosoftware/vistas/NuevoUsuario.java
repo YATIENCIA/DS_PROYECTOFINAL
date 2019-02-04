@@ -81,15 +81,16 @@ public class NuevoUsuario extends Vista {
         gp.add(c_perfil, 4, 10);
 
         gp.setAlignment(Pos.CENTER);
-
+        gp.setVgap(10);
+        
         general.setTop(gp);
 
         Button b = new Button("Registrar");
-
+        gp.add(b,4,11);
         b.setOnAction(Ingreso());
 
         menu.setAlignment(Pos.CENTER);
-        menu.getChildren().addAll(general, b);
+        menu.getChildren().addAll(general);
     }
 
     public EventHandler<ActionEvent> Ingreso() {
