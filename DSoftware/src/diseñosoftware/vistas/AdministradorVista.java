@@ -235,6 +235,8 @@ public class AdministradorVista extends Vista {
         c_apellido.setPromptText(user.getApellidos());
         TextField c_usuario = new TextField();
         c_usuario.setPromptText(user.getUsuario());
+        c_usuario.setText(user.getUsuario());
+        c_usuario.setDisable(true);
         TextField c_contrasena = new TextField();
         c_contrasena.setPromptText(user.getContrasena());
         //c_contrasena.setText(user.getContrasena());
@@ -273,8 +275,8 @@ public class AdministradorVista extends Vista {
         
         modificar.setOnAction(e-> {
             if(Helper.VerificacionDatosIngresados(c_usuario.getText(),c_contrasena.getText(),c_nombre.getText(),c_apellido.getText(),c_telefono.getText(),c_email.getText(),c_direccion.getText(),c_cedula.getText(),c_mat.getText())){
-                
-                ConexionSQL.ModificarPersonaEnLaBase(c_usuario.getText(),c_contrasena.getText(),c_nombre.getText(),c_apellido.getText(),c_telefono.getText(),c_email.getText(),c_direccion.getText(),c_cedula.getText(),c_mat.getText(),false);
+                ConexionSQL.ModificarUsuarioEnLaBase(c_usuario.getText(), c_contrasena.getText());
+                //ConexionSQL.ModificarPersonaEnLaBase(c_usuario.getText(),c_nombre.getText(),c_apellido.getText(),c_telefono.getText(),c_email.getText(),c_direccion.getText(),c_cedula.getText(),c_mat.getText(),false);
                 System.out.println("procedure de actualizacion");
                 alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Usuario modificado");
@@ -283,6 +285,7 @@ public class AdministradorVista extends Vista {
 
                 alert.showAndWait();
                 stageDialog.close();
+                //CrearAdministrarUsuarios();
                 
                 
                 
@@ -334,6 +337,8 @@ public class AdministradorVista extends Vista {
                
         TextField tNombreProducto= new TextField();
         tNombreProducto.setPromptText(producto.getNombre());
+        tNombreProducto.setText(producto.getNombre());
+        tNombreProducto.setDisable(true);
         TextField tDescripcionProducto= new TextField();
         TextField tPrecioProducto= new TextField();
         tPrecioProducto.setPromptText(String.valueOf(producto.getPrecio())+" (entero.decimal)");
@@ -370,6 +375,8 @@ public class AdministradorVista extends Vista {
             if(Helper.VerificacionDatosIngresados(tNombreProducto.getText(),tDescripcionProducto.getText(),tPrecioProducto.getText(),ttiempoMaxEntrega.getText(),tCategoria.getText(),tCantidadDisponible.getText())){
                 
                 //ConexionSQL.ModificarPersonaEnLaBase(c_usuario.getText(),c_contrasena.getText(),c_nombre.getText(),c_apellido.getText(),c_telefono.getText(),c_email.getText(),c_direccion.getText(),c_cedula.getText(),c_mat.getText(),false);
+                ConexionSQL.ModificarProductoEnLaBase(tNombreProducto.getText(),ttiempoMaxEntrega.getText(),tCategoria.getText(),tPrecioProducto.getText(),tCantidadDisponible.getText(),producto.getVendedor().getCedula());
+                
                 System.out.println("procedure de actualizacion");
                 alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Usuario modificado");
@@ -377,6 +384,7 @@ public class AdministradorVista extends Vista {
                 alert.setContentText("Los datos del producto han sido modificados con exito");
                 alert.showAndWait();
                 stageDialog.close();
+                CrearAdministrarProductos();
             }else{
             
                 alert = new Alert(Alert.AlertType.ERROR);
