@@ -6,7 +6,6 @@
 package diseñosoftware.vistas;
 
 import controladores.SistemaPoliVentas;
-import diseñosoftware.main;
 import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -26,6 +25,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import modelos.CambiarEstadoDB;
 import modelos.ConexionSQL;
 import modelos.Producto;
 import modelos.Usuario;
@@ -181,7 +181,7 @@ public class Vista {
                 alert.setContentText("¿Está seguro que desea eliminar el "+elemento+"?");
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK){
-                    ConexionSQL.CambiarEstadoProducto(producto.getId(ConexionSQL.cn));
+                    CambiarEstadoDB.CambiarEstadoProducto(producto.getId(ConexionSQL.cn));
                     table.getItems().remove(producto);
                 } else {
                     // ... user chose CANCEL or closed the dialog
@@ -200,7 +200,7 @@ public class Vista {
                 alert.setContentText("¿Está seguro que desea eliminar el "+elemento+"?");
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK){
-                    ConexionSQL.CambiarEstadoCuenta(usuario.getUsuario());
+                    CambiarEstadoDB.CambiarEstadoCuenta(usuario.getUsuario());
                     table.getItems().remove(usuario);
                 } else {
                     // ... user chose CANCEL or closed the dialog

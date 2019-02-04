@@ -67,7 +67,7 @@ public class ProductosMasBuscadosVista {
 
     private void Center() {
 
-        ObservableList<Producto> lis = ConexionSQL.ProductosMasBuscados();
+        ObservableList<Producto> lis = BuscarProductosDB.ProductosMasBuscados();
         //lis = FXCollections.observableArrayList();
         tabla = Tablas.CrearProdPrec(lis);
 

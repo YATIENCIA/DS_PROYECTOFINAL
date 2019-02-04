@@ -36,9 +36,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import modelos.AñadirDB;
+import modelos.BuscarProductosDB;
 import modelos.Categoria;
 import modelos.Comprador;
 import modelos.ConexionSQL;
+import modelos.ObtenerPedidosDB;
 import modelos.Producto;
 import modelos.Usuario;
 import modelos.Venta;
@@ -96,7 +99,7 @@ deberá permitir comprar dicho artículo./*
          */
         bbuscar.setOnAction(e -> {
             PresentarProductos(v, tfnombre.getText());
-            ConexionSQL.AñadirABusqueda(tfnombre.getText());
+            AñadirDB.AñadirABusqueda(tfnombre.getText());
         });
         Busqueda.setCenter(v);
         v.setSpacing(20);
@@ -107,7 +110,7 @@ deberá permitir comprar dicho artículo./*
 
         ScrollPane scroll = new ScrollPane();
         VBox vproductos = new VBox();
-        List<Producto> lista = ConexionSQL.BuscarProductos(palabra);
+        List<Producto> lista = BuscarProductosDB.BuscarProductos(palabra);
         for (Producto p : lista) {
             HBox producto = new HBox();
             VBox infoProducto = new VBox();
@@ -176,7 +179,7 @@ deberá permitir comprar dicho artículo./*
     public void CrearComprasPendientes() {
         VBox v = new VBox();
 
-        ObservableList<Venta> list = ConexionSQL.PedidosPendientes();
+        ObservableList<Venta> list = ObtenerPedidosDB.PedidosPendientes();
 
         
 
@@ -206,7 +209,7 @@ tabla*/
         VBox v = new VBox();
         String sql = "";
 
-        ObservableList<Producto> list = ConexionSQL.ProductosMasBuscados();
+        ObservableList<Producto> list = BuscarProductosDB.ProductosMasBuscados();
 
         //Aqui van los más buscado!!!!!!!
         TableView table = Tablas.CrearProdPrec(list);

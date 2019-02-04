@@ -42,8 +42,8 @@ public class Comprador extends Usuario {
     public static void CrearNuevoComprador(String usuario, String contraseña, String nombres, String apellidos, String telefono, String email, String direccion, String cedula, String matricula, boolean whatsapp) {
 
         Comprador v = new Comprador(usuario, contraseña, nombres, apellidos, telefono, email, direccion, cedula, matricula, whatsapp);
-        ConexionSQL.AñadirCuentaALaBase(usuario, contraseña, "Comprador");
-        ConexionSQL.AñadirPersonaALaBase(usuario, contraseña, nombres, apellidos, telefono, email, direccion, cedula, matricula, whatsapp);
+        AñadirDB.AñadirCuentaALaBase(usuario, contraseña, "Comprador");
+        AñadirDB.AñadirPersonaALaBase(usuario, contraseña, nombres, apellidos, telefono, email, direccion, cedula, matricula, whatsapp);
         
         }
 

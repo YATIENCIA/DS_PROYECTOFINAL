@@ -5,6 +5,7 @@
  */
 package modelos;
 
+import controladores.SistemaPoliVentas;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -128,4 +129,21 @@ public class Venta {
             System.out.println(ex.getMessage());
         }
     }
+    
+     static public void GuardarVenta(Venta v) {
+        try {
+            String query = "{call ingresarPedido(?,?,?,?,?)}";
+            ResultSet rs;
+            Connection conn = ConexionSQL.getConnection();
+            CallableStatement stmt = conn.prepareCall(query);
+            //Set IN parameter
+            stmt.setString(1, SistemaPoliVentas.usuario.getCedula());
+            stmt.setInt(2, v.getProducto().getId(conn));
+            stmt.setInt(3, v.getCantidad());
+            stmt.setString(4, v.getEstado().toString());
+            stmt.setInt(5, ObtenerDatosDB.getID(v.getEstrategia().toString()));
+            rs = stmt.executeQuery();
+        } catch (SQLException ex) {
+        }
+     }
 }

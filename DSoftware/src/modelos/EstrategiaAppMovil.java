@@ -19,7 +19,7 @@ public class EstrategiaAppMovil implements PagoEstrategia{
     public void pago(int cantpro, Producto p) {
         System.out.println("Pago en AppMovil");
         Venta venta=new Venta(true, EstadoVenta.PENDIENTE, p.getVendedor(), (Comprador) SistemaPoliVentas.usuario, p, cantpro, this);
-        ConexionSQL.GuardarVenta(venta);
+        Venta.GuardarVenta(venta);
     
     }
 

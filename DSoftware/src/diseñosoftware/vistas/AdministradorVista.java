@@ -10,8 +10,6 @@ import Helpers.Helper;
 import controladores.AdministradorControlador;
 import static diseñosoftware.vistas.Vista.NotificacionEliminarProducto;
 import static diseñosoftware.vistas.Vista.NotificacionEliminarUsuario;
-import static diseñosoftware.vistas.Vista.NotificacionModificarProducto;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,9 +17,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
@@ -33,11 +29,12 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import modelos.ConexionSQL;
+import modelos.AñadirDB;
+import modelos.BuscarProductosDB;
+import modelos.ModificarDatos;
+import modelos.ObtenerDatosDB;
 import modelos.Producto;
 import modelos.Usuario;
 import recursos.constantes;
@@ -84,7 +81,7 @@ public class AdministradorVista extends Vista {
         VBox v = new VBox();
 
         //Creo filas modelo
-        ObservableList<Usuario> list =ConexionSQL.TodosLosUsuarios();
+        ObservableList<Usuario> list =ObtenerDatosDB.TodosLosUsuarios();
         System.out.println(list.size());
         for(Usuario u: list)
         {
@@ -148,7 +145,7 @@ public class AdministradorVista extends Vista {
     public void CrearAdministrarProductos() {
         //CRUD sobre usuarios y producto
         VBox v = new VBox();
-        ObservableList<Producto> list = ConexionSQL.TodosLosProductos();
+        ObservableList<Producto> list = BuscarProductosDB.TodosLosProductos();
         TableView table = Tablas.CrearProdPrecDesc(list);
         Button CrearPro = new Button("Crear nuevo producto");
         v.getChildren().addAll(CrearPro, table);
@@ -275,7 +272,7 @@ public class AdministradorVista extends Vista {
         
         modificar.setOnAction(e-> {
             if(Helper.VerificacionDatosIngresados(c_usuario.getText(),c_contrasena.getText(),c_nombre.getText(),c_apellido.getText(),c_telefono.getText(),c_email.getText(),c_direccion.getText(),c_cedula.getText(),c_mat.getText())){
-                ConexionSQL.ModificarUsuarioEnLaBase(c_usuario.getText(), c_contrasena.getText());
+                ModificarDatos.ModificarUsuarioEnLaBase(c_usuario.getText(), c_contrasena.getText());
                 //ConexionSQL.ModificarPersonaEnLaBase(c_usuario.getText(),c_nombre.getText(),c_apellido.getText(),c_telefono.getText(),c_email.getText(),c_direccion.getText(),c_cedula.getText(),c_mat.getText(),false);
                 System.out.println("procedure de actualizacion");
                 alert = new Alert(Alert.AlertType.INFORMATION);
@@ -375,7 +372,7 @@ public class AdministradorVista extends Vista {
             if(Helper.VerificacionDatosIngresados(tNombreProducto.getText(),tDescripcionProducto.getText(),tPrecioProducto.getText(),ttiempoMaxEntrega.getText(),tCategoria.getText(),tCantidadDisponible.getText())){
                 
                 //ConexionSQL.ModificarPersonaEnLaBase(c_usuario.getText(),c_contrasena.getText(),c_nombre.getText(),c_apellido.getText(),c_telefono.getText(),c_email.getText(),c_direccion.getText(),c_cedula.getText(),c_mat.getText(),false);
-                ConexionSQL.ModificarProductoEnLaBase(tNombreProducto.getText(),ttiempoMaxEntrega.getText(),tCategoria.getText(),tPrecioProducto.getText(),tCantidadDisponible.getText(),producto.getVendedor().getCedula());
+                ModificarDatos.ModificarProductoEnLaBase(tNombreProducto.getText(),ttiempoMaxEntrega.getText(),tCategoria.getText(),tPrecioProducto.getText(),tCantidadDisponible.getText(),producto.getVendedor().getCedula());
                 
                 System.out.println("procedure de actualizacion");
                 alert = new Alert(Alert.AlertType.INFORMATION);
@@ -471,7 +468,7 @@ public class AdministradorVista extends Vista {
             if(Helper.VerificacionDatosIngresados(tNombreProducto.getText(),tDescripcionProducto.getText(),tPrecioProducto.getText(),ttiempoMaxEntrega.getText(),tCategoria.getText(),tCantidadDisponible.getText())){
                 
                 //ConexionSQL.ModificarPersonaEnLaBase(c_usuario.getText(),c_contrasena.getText(),c_nombre.getText(),c_apellido.getText(),c_telefono.getText(),c_email.getText(),c_direccion.getText(),c_cedula.getText(),c_mat.getText(),false);
-                ConexionSQL.AnadirProductoEnLaBase(tNombreProducto.getText(),ttiempoMaxEntrega.getText(),tCategoria.getText(),tPrecioProducto.getText(),tCantidadDisponible.getText(),"0900000001");
+                AñadirDB.AnadirProductoEnLaBase(tNombreProducto.getText(),ttiempoMaxEntrega.getText(),tCategoria.getText(),tPrecioProducto.getText(),tCantidadDisponible.getText(),"0900000001");
                 
                 System.out.println("procedure de actualizacion");
                 alert = new Alert(Alert.AlertType.INFORMATION);

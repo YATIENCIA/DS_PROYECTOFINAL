@@ -41,8 +41,8 @@ public class Vendedor extends Comprador {
 
         Vendedor v = new Vendedor(usuario, contraseña, nombres, apellidos, telefono, email, direccion, cedula, matricula, whatsapp);
         
-        ConexionSQL.AñadirCuentaALaBase(usuario, contraseña, "Vendedor");
-        ConexionSQL.AñadirPersonaALaBase(usuario, contraseña, nombres, apellidos, telefono, email, direccion, cedula, matricula, whatsapp);
+       AñadirDB.AñadirCuentaALaBase(usuario, contraseña, "Vendedor");
+        AñadirDB.AñadirPersonaALaBase(usuario, contraseña, nombres, apellidos, telefono, email, direccion, cedula, matricula, whatsapp);
         
     }
 
