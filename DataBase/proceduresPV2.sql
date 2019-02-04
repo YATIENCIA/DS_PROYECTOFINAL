@@ -26,12 +26,19 @@ update cuenta set eliminado = true  where usuario=us;
 end$$
 
 create procedure eliminarProducto(
-in id	varchar(15))
+in id	int)
 begin
 update producto set eliminado=true  where id=idproducto;
 end$$
 
-
+create procedure modificarDatosCuenta(
+in usuarioin varchar(15),
+in contrasenain varchar(15))
+begin
+update cuenta
+set usuario=usuarioin, contraseña=contrasenain
+where usuario=usuarioin;
+end$$
 
 create procedure modificarUsuario(
 in cedulain		varchar(10) ,
@@ -58,7 +65,7 @@ in cantidadDisponiblein	int,
 in vendedorin			varchar(10))
 begin
 update producto
-set nombre=nombrein, tiempoMaxEntrega=tiempoMaxEntregain,categoria=cateogriain,costo=costoin,
+set nombre=nombrein, tiempoMaxEntrega=tiempoMaxEntregain,categoria=categoriain,costo=costoin,
 	cantidadDisponible=cantidadDisponiblein, vendedor=vendedorin
 where nombre=nombrein;
 end$$
