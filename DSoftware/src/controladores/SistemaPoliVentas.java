@@ -5,6 +5,7 @@
  */
 package controladores;
 
+import diseñosoftware.main;
 import diseñosoftware.vistas.AdministradorVista;
 import diseñosoftware.vistas.CompradorVista;
 import diseñosoftware.vistas.NuevoUsuario;
@@ -62,6 +63,9 @@ public class SistemaPoliVentas {
                 alert.setContentText("¿Desea registrarse en PoliVentas?");
                 Optional<ButtonType> result = alert.showAndWait();
                 if (!(result.get() == ButtonType.OK)){
+                     SistemaPoliVentas.vista=new Vista(50, "Vista");
+                    SistemaPoliVentas.vista.CreateLogin();
+                    main.stage.setScene(SistemaPoliVentas.vista.getScene());
                 } 
                 else{
                     NuevoUsuario nu = new NuevoUsuario(50, "av");
@@ -124,7 +128,6 @@ public class SistemaPoliVentas {
         ResultSet rs;
         try (Connection conn = ConexionSQL.getConnection();
                 CallableStatement stmt = conn.prepareCall(query)) {
-            System.out.println("usuario obtenida"+ usuario.getUsuario());
             //Set IN parameter
             stmt.setString(1, usuario.getUsuario());
             stmt.registerOutParameter(2, Types.VARCHAR);
@@ -133,7 +136,6 @@ public class SistemaPoliVentas {
             
             rs = stmt.executeQuery();
             String cedula=stmt.getString(2);
-            System.out.println("Cdul obtenida"+cedula);
             String nombres=stmt.getString(3);
             String apellidos=stmt.getString(4);
             usuario.setCedula(cedula);
