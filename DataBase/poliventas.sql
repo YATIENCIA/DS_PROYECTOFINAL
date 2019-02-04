@@ -77,3 +77,11 @@ categoria	int,
 primary key(producto,categoria),
 foreign key	(producto) references producto(idproducto),
 foreign key	(categoria) references categoria(idcategoria));
+
+
+create table Notificaciones(
+vendedor varchar(10),
+cantidad int default 0,
+primary key(vendedor),
+foreign key(vendedor) references persona(cedula)
+);

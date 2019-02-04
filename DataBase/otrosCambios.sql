@@ -8,16 +8,10 @@ foreign key	(idProd) references producto(idproducto));
 
 drop procedure busquedaProd;
 delimiter $$
-create procedure busquedaProd(in busqueda varchar(100))
+create procedure busquedaProd(in busquedap varchar(100))
 begin 
-select nombre,categoria,  costo, cantidadDisponible, tiempoMaxEntrega
-from producto
-
-where (nombre like CONCAT('%', busqueda, '%') or categoria like CONCAT('%', busqueda, '%')) and eliminado=false;
-
 insert into busqueda(idProd) select idproducto from producto
-
-where (nombre like CONCAT('%', busqueda, '%') or categoria like CONCAT('%', busqueda, '%')) and eliminado=false;
+where (nombre like CONCAT('%', busquedap, '%') or categoria like CONCAT('%', busquedap, '%')) and eliminado=false;
 
 end$$
 

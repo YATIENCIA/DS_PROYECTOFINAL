@@ -79,6 +79,17 @@ begin
     into nombresin, apellidosin, numeroin, correoin, direccionin, matriculain, saldoin, usuarioin from persona where cedulain=cedula;
 end$$
 
+create procedure getProducto(
+in idin		int ,
+out nombrein		varchar(30),
+out tiempoin	int,
+out categoriain		varchar(10),
+out costoin		double,
+out disponiblein	int)
+begin
+	select nombre, tiempoMaxEntrega, categoria, costo, cantidadDisponible
+    into nombrein, tiempoin, categoriain, costoin, disponiblein from producto where idin=idproducto;
+end$$
 
 create procedure AddNotificacion(
 in cedulain		varchar(10) )
@@ -99,3 +110,17 @@ begin
 		update Notificaciones set cantidad=0 where cedulain=vendedor;
 	end if;
 end$$
+
+
+create procedure getNotificacion(
+in cedulain		varchar(10),
+out cantidadout int)
+begin
+	select cantidad into cantidadout from Notificaciones where cedulain=vendedor;
+end$$
+
+create procedure getPedidosPendientes()
+begin
+	select comprador, producto, cantidad, fechaPedido, tipoPago from pedido where estado="Pendiente";
+end$$
+
