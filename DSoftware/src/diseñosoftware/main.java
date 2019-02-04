@@ -38,6 +38,7 @@ public class main extends Application{
         this.stage=stage;
         stage.setHeight(650);
         stage.setWidth(1000);
+        stage.setResizable(false);
         
                
         stage.centerOnScreen();
