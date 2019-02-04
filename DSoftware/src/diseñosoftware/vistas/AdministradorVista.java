@@ -425,7 +425,8 @@ public class AdministradorVista extends Vista {
     }
     
     public void crearNuevoProducto(){
-        Stage stageDialog = new Stage();
+        stageDialog = new Stage();
+        stageDialog.initModality(Modality.APPLICATION_MODAL);
          //crear el stageDialog para la ventana de dialogo
         stageDialog.setTitle("CREAR NUEVO PRODUCTO");
         //decirle al stageDialog que se comporte como un pop-up (Modal)
@@ -461,22 +462,55 @@ public class AdministradorVista extends Vista {
         grid.add(ttiempoMaxEntrega,1,3);
         grid.add(tCategoria,1,4);
         grid.add(tCantidadDisponible,1,5);
-        
+        grid.setVgap(10);
+        grid.setAlignment(Pos.CENTER);
         
         Button aceptar = new Button("ACEPTAR");
         aceptar.setOnAction(e->{
+            
+            if(Helper.VerificacionDatosIngresados(tNombreProducto.getText(),tDescripcionProducto.getText(),tPrecioProducto.getText(),ttiempoMaxEntrega.getText(),tCategoria.getText(),tCantidadDisponible.getText())){
+                
+                //ConexionSQL.ModificarPersonaEnLaBase(c_usuario.getText(),c_contrasena.getText(),c_nombre.getText(),c_apellido.getText(),c_telefono.getText(),c_email.getText(),c_direccion.getText(),c_cedula.getText(),c_mat.getText(),false);
+                ConexionSQL.AnadirProductoEnLaBase(tNombreProducto.getText(),ttiempoMaxEntrega.getText(),tCategoria.getText(),tPrecioProducto.getText(),tCantidadDisponible.getText(),"0900000001");
+                
+                System.out.println("procedure de actualizacion");
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Usuario modificado");
+                alert.setHeaderText(null);
+                alert.setContentText("Los datos del producto han sido modificados con exito");
+                alert.showAndWait();
+                stageDialog.close();
+                CrearAdministrarProductos();
+            }else{
+            
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Campos vacios");
+                alert.setContentText("Por favor ingrese datos en todos los campos para la actualizacion del usuario");
+
+                alert.showAndWait();
+            
+            }
+            
             String nombre= tNombreProducto.getText();
             String descripcion=tDescripcionProducto.getText();
             String precio=tPrecioProducto.getText();
             
-            String[] info= {nombre,descripcion,precio};
-            //controlador.modificarProducto(producto, info);
+            String tiempoMaxEntrega= ttiempoMaxEntrega.getText();
+            String categoria= tCategoria.getText();
+            String cantidadDisponible= tCantidadDisponible.getText();
+            
+            
+            String[] info= {nombre,descripcion,precio,tiempoMaxEntrega,categoria,cantidadDisponible};
+            
+            
             
                 });
 
         grid.add(aceptar,0,6);
         
-        Scene scene2 = new Scene(grid,250,250);
+        Scene scene2 = new Scene(grid,550,550);
+        stageDialog.setResizable(false);
 
         stageDialog.setScene(scene2);
                 
