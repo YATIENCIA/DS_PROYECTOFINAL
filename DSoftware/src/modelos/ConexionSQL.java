@@ -302,7 +302,7 @@ public class ConexionSQL {
         return v;
     }
     
-    public static void ModificarPersonaEnLaBase(String usuario, String contraseña, String nombres, String apellidos, String telefono, String email, String direccion, String cedula, String matricula, boolean whatsapp) {
+    public static void ModificarPersonaEnLaBase(String usuario, String nombres, String apellidos, String telefono, String email, String direccion, String cedula, String matricula, boolean whatsapp) {
         String query = "{call modificarUsuario(?,?,?,?,?,?,?,?)}";
         ResultSet rs;
         try (Connection conn = ConexionSQL.getConnection();
@@ -323,6 +323,45 @@ public class ConexionSQL {
             System.out.println(ex.getMessage());
         }
     }
+    
+    public static void ModificarUsuarioEnLaBase(String usuario, String contrasena) {
+        String query = "{call modificarDatosCuenta(?,?)}";
+        ResultSet rs;
+        try (Connection conn = ConexionSQL.getConnection();
+                CallableStatement stmt = conn.prepareCall(query)) {
+            //Set IN parameter
+            stmt.setString(1, usuario);
+            stmt.setString(2, contrasena);
+            rs = stmt.executeQuery();
+
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    public static void ModificarProductoEnLaBase(String nombre, String tiempo_max_entrega, String categoria, String costo, String cantidad, String vendedor) {
+        String query = "{call modificarProducto(?,?,?,?,?,?)}";
+        ResultSet rs;
+        try (Connection conn = ConexionSQL.getConnection();
+                CallableStatement stmt = conn.prepareCall(query)) {
+            //Set IN parameter
+            stmt.setString(1, nombre);
+            stmt.setInt(2, Integer.parseInt(tiempo_max_entrega));
+            stmt.setString(3, categoria);
+            stmt.setDouble(4, Double.parseDouble(costo));
+            stmt.setInt(5, Integer.parseInt(cantidad));
+            stmt.setString(6, vendedor);
+            rs = stmt.executeQuery();
+
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    
+    
 
     static public ObservableList<Venta> PedidosPendientes() {
         ObservableList<Venta> list = FXCollections.observableArrayList();
