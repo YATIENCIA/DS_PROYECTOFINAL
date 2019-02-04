@@ -5,20 +5,10 @@
  */
 package modelos;
 
-import controladores.SistemaPoliVentas;
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Types;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+
 
 public class ConexionSQL {
 
@@ -26,19 +16,21 @@ public class ConexionSQL {
 
     public static void ConexionSQL() {
         try {
-            cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/poliventas", "root", "123456789");
+            cn = DriverManager.getConnection("jdbc:mysql://192.168.1.1:3306/poliventas", "poliventas", "poliventas");
             System.out.println("Conexión exitosa!");
         } catch (SQLException ex) {
+            System.out.println("No se pudo conectar a la base");
         }
     }
 
     public static Connection getConnection() {
         try {
             if (cn.isClosed()) {
-                cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/poliventas", "root", "123456789");
+                cn = DriverManager.getConnection("jdbc:mysql://192.168.1.1:3306/poliventas", "poliventas", "poliventas");
 
             }
         } catch (SQLException ex) {
+            System.out.println(ex);
         }
         return cn;
     }

@@ -41,7 +41,6 @@ public class BuscarProductosDB {
                 list.add(producto);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(ConexionSQL.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
@@ -67,7 +66,6 @@ public class BuscarProductosDB {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(ConexionSQL.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
@@ -90,7 +88,6 @@ public class BuscarProductosDB {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(ConexionSQL.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }

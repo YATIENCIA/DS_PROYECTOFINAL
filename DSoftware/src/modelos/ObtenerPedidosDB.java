@@ -24,12 +24,12 @@ public class ObtenerPedidosDB {
             ResultSet rs = ConexionSQL.getConnection().createStatement().executeQuery(query);
             while (rs.next()) {
                 Venta venta=new Venta();
-                Producto p=ObtenerDatosDB.getProductoByID(rs.getString("producto"));
+                Producto p=ObtenerDatosDB.getProductoByID(rs.getInt("producto"));
                 venta.setComprador(ObtenerDatosDB.getVendedorByID(rs.getString("comprador")));
                 venta.setProducto(p);
                 venta.setCantidad(rs.getInt("cantidad"));
-                
-                list.add(venta);
+                if(p.getNombre()!=null)
+                     list.add(venta);
             }
         } catch (SQLException ex) {
         }

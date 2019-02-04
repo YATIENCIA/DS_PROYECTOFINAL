@@ -141,8 +141,8 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario{" + "usuario=" + usuario + ", contrase\u00f1a=" + contrasena + ", nombres=" + nombres + ", apellidos=" + apellidos + ", telefono=" + telefono + ", email=" + email + ", direccion=" + direccion + ", cedula=" + cedula + ", matricula=" + matricula + ", whatsapp=" + whatsapp + ", tipo=" + tipo + '}';
-    }
+        return nombres;
+                }
     
     
     

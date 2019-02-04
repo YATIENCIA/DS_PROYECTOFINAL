@@ -110,7 +110,6 @@ public class Venta {
             stmt.setString(1, v.getCedula());
             rs = stmt.executeQuery();
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
         }
     }
     
@@ -126,7 +125,6 @@ public class Venta {
             stmt.setString(1, v.getCedula());
             rs = stmt.executeQuery();
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
         }
     }
     

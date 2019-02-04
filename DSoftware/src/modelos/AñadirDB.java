@@ -16,7 +16,7 @@ import java.sql.SQLException;
  */
 public class AñadirDB {
       public static void AñadirABusqueda(String palabra) {
-        String query = "{call busquedaProd(?)}";
+        String query = "{call busquedaProdTB(?)}";
         ResultSet rs;
         try (Connection conn = ConexionSQL.getConnection();
                 CallableStatement stmt = conn.prepareCall(query)) {

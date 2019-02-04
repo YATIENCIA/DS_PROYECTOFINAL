@@ -38,8 +38,6 @@ public class SistemaPoliVentas {
         vista=null;
         //Búsqueda en la base
         usuario = ObtenerUsuario(Usuario, contraseña);
-        //Vista vista = new AdministradorVista(50, "AV");
-        System.out.println("cedula de usuario registrado"+usuario.getCedula());
         if (usuario instanceof Vendedor) {
             VendedorVista vv = new VendedorVista(50, "CV");
             vista = vv;

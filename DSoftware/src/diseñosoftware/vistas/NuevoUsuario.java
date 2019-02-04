@@ -97,7 +97,7 @@ public class NuevoUsuario extends Vista {
         EventHandler<ActionEvent> e = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("este es el usuairo " + c_usuario.getText());
+               
                 //Crear el nuevo usuario
                 switch (c_perfil.getPromptText()) {
                     case "Vendedor":

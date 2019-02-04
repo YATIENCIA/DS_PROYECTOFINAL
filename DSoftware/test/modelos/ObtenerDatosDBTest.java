@@ -71,7 +71,7 @@ public class ObtenerDatosDBTest {
     public void testGetProductoByID() {
         System.out.println("getProductoByID");
         ConexionSQL.ConexionSQL();
-        String id = "";
+        int id = 0;
         Producto expResult = null;
         Producto result = ObtenerDatosDB.getProductoByID(id);
         assertNotEquals(null, result);

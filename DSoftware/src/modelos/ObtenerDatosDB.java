@@ -78,7 +78,7 @@ public class ObtenerDatosDB {
         return v;
     }
     
-     static public Producto getProductoByID(String id) {
+     static public Producto getProductoByID(int id) {
         Producto p=new Producto();
         try {
             String query = "{call getProducto(?,?,?,?,?,?)}";
@@ -87,7 +87,7 @@ public class ObtenerDatosDB {
             Connection conn = ConexionSQL.getConnection();
             CallableStatement stmt = conn.prepareCall(query);
             //Set IN parameter
-            stmt.setString(1, id);
+            stmt.setInt(1, id);
             stmt.registerOutParameter(2, Types.VARCHAR);
             stmt.registerOutParameter(3, Types.INTEGER);
             stmt.registerOutParameter(4, Types.VARCHAR);

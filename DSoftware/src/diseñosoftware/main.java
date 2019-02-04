@@ -8,12 +8,8 @@ package diseñosoftware;
 
 import diseñosoftware.vistas.Vista;
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import modelos.ConexionSQL;
-import recursos.constantes;
 
 /**
  *
@@ -24,10 +20,6 @@ public class main extends Application{
     
     @Override
     public void start(Stage stage) throws Exception {
-       
-        String p="   ";
-        System.out.println(p.length());
-        //Conexion SQL
        ConexionSQL cs=new ConexionSQL();
        cs.ConexionSQL();
        
