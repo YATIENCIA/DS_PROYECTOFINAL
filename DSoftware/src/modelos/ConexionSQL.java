@@ -111,13 +111,13 @@ public class ConexionSQL {
         }
     }
 
-    public static void CambiarEstadoProducto(String codigo) {
+    public static void CambiarEstadoProducto(int codigo) {
         String query = "{call eliminarProducto(?)}";
         ResultSet rs;
         try (Connection conn = ConexionSQL.getConnection();
                 CallableStatement stmt = conn.prepareCall(query)) {
             //Set IN parameter
-            stmt.setString(1, codigo);
+            stmt.setInt(1, codigo);
             rs = stmt.executeQuery();
 
         } catch (SQLException ex) {
@@ -419,5 +419,29 @@ public class ConexionSQL {
         return p;
     }
 
+    
+   public static void AnadirProductoEnLaBase(String nombre, String tiempo_max_entrega, String categoria, String costo, String cantidad, String vendedor) {
+        String query = "{call ingresarProducto(?,?,?,?,?,?)}";
+        ResultSet rs;
+        try (Connection conn = ConexionSQL.getConnection();
+                CallableStatement stmt = conn.prepareCall(query)) {
+            //Set IN parameter
+            stmt.setString(1, nombre);
+            stmt.setInt(2, Integer.parseInt(tiempo_max_entrega));
+            stmt.setString(3, categoria);
+            stmt.setDouble(4, Double.parseDouble(costo));
+            stmt.setInt(5, Integer.parseInt(cantidad));
+            stmt.setString(6, vendedor);
+            rs = stmt.executeQuery();
+
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    
+    
+    
     
 }
