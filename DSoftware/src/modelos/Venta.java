@@ -5,6 +5,11 @@
  */
 package modelos;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 
 /**
@@ -92,4 +97,35 @@ public class Venta {
     }
 
    
+    public static void NotificarVendedor(Vendedor v)
+    {
+        int i = 0;
+        try {
+            String query = "{call AddNotificacion(?)}";
+            ResultSet rs;
+            Connection conn = ConexionSQL.getConnection();
+            CallableStatement stmt = conn.prepareCall(query);
+            //Set IN parameter
+            stmt.setString(1, v.getCedula());
+            rs = stmt.executeQuery();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    public static void EliminarNotVendedor(Vendedor v)
+    {
+ 
+        try {
+            String query = "{call RemoveNotificacion(?)}";
+            ResultSet rs;
+            Connection conn = ConexionSQL.getConnection();
+            CallableStatement stmt = conn.prepareCall(query);
+            //Set IN parameter
+            stmt.setString(1, v.getCedula());
+            rs = stmt.executeQuery();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
 }

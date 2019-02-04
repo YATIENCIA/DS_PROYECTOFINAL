@@ -7,9 +7,10 @@ from cuenta
 where usuario= us and contraseña= pass and eliminado=false;
 end $$
 
+
 create procedure historialComprasEstado(in cedu varchar(10), in estadoin varchar(15))
 begin 
-select p.nombre , sq.cantidad
+select p.nombre , p.costo, p.categoria, sq.cantidad as cantidad
 from producto p 
 join (select * 
 	  from pedido

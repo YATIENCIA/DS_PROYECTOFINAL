@@ -64,3 +64,38 @@ where nombre=nombrein;
 end$$
 
 
+create procedure getVendedor(
+in cedulain		varchar(10) ,
+out nombresin		varchar(30),
+out apellidosin	varchar(30),
+out numeroin		varchar(10),
+out correoin		varchar(25),
+out direccionin	varchar(50),
+out matriculain 	varchar(10),
+out saldoin		double,
+out usuarioin		varchar(15))
+begin
+	select nombres, apellidos, numero, correo, direccion, matricula, saldo, usuario
+    into nombresin, apellidosin, numeroin, correoin, direccionin, matriculain, saldoin, usuarioin from persona where cedulain=cedula;
+end$$
+
+
+create procedure AddNotificacion(
+in cedulain		varchar(10) )
+begin
+	if(cedulain not in (Select vendedor from Notificaciones)) then 
+		Insert into Notificaciones(vendedor) values (cedulain);
+	else
+		update Notificaciones set cantidad=cantidad+1  where cedulain=vendedor;
+	end if;
+end$$
+
+create procedure RemoveNotificacion(
+in cedulain		varchar(10) )
+begin
+	if(cedulain not in (Select vendedor from Notificaciones)) then 
+		Insert into Notificaciones(vendedor) values (cedulain);
+	else
+		update Notificaciones set cantidad=0 where cedulain=vendedor;
+	end if;
+end$$

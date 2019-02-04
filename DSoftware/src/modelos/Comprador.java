@@ -20,7 +20,9 @@ public class Comprador extends Usuario {
         } else {
             ef = new EstrategiaAppMovil();
         }
+        Venta.NotificarVendedor(p.getVendedor());
         ef.pago(cantidad, p);
+        
         
     }
 

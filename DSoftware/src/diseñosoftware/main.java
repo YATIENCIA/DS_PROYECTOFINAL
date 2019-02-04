@@ -39,15 +39,7 @@ public class main extends Application{
         stage.setHeight(650);
         stage.setWidth(1000);
         
-        
-        
-
-        // Añado algo de texto a la ventana (la imagen estará primero)
-        //label.setFill(Color.RED);
-      //  label.setFont(Font.font("Tahoma", FontWeight.BOLD, 38));
-
-        
-        
+               
         stage.centerOnScreen();
         stage.show();
     }

@@ -104,12 +104,12 @@ public class ProductosMasBuscadosVista {
                 Stage s = new Stage();
                 HBox producto = new HBox();
                 VBox infoProducto = new VBox();
-                Label nombre = new Label("Nombre del producto " + p.getNombre());
-                Label cat = new Label("Categoría del producto " + p.getCategoria());
-                Label precio = new Label("Precio del producto " + p.getPrecio());
-                Label tmaxentr = new Label("Tiempo máximo de entrega del producto " + p.getTiempoMaxEntrega());
-                Label calpro = new Label("Calificación del producto " + p.getCalificacion());
-                Label calven = new Label("Vendedor  " + p.getVendedor());
+                Label nombre = new Label("Nombre del producto: " + p.getNombre());
+                Label cat = new Label("Categoría del producto: " + p.getCategoria());
+                Label precio = new Label("Precio del producto: " + p.getPrecio());
+                Label tmaxentr = new Label("Tiempo máximo de entrega del producto: " + p.getTiempoMaxEntrega());
+                Label calpro = new Label("Calificación del producto: " + p.getCalificacion());
+                Label calven = new Label("Vendedor:  " + p.getVendedor());
                 Button comprar = new Button("Comprar producto ");
                 infoProducto.setAlignment(Pos.CENTER);
                 infoProducto.getChildren().addAll(nombre, cat, precio, tmaxentr, calpro, calven);

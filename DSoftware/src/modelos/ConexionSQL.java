@@ -83,8 +83,6 @@ public class ConexionSQL {
         }
     }
 
-  
-
     public static void CambiarEstadoCuenta(String usuario) {
         String query = "{call eliminarCuenta(?)}";
         ResultSet rs;
@@ -129,7 +127,7 @@ public class ConexionSQL {
 
     static public ObservableList<Producto> ProductosMasBuscados() {
         ObservableList<Producto> list = FXCollections.observableArrayList();
-   String query = "select nombre, costo, sq.cantidad as cantidadBusqueda "
+        String query = "select nombre, tiempoMaxEntrega, categoria, calificacion, vendedor, costo, sq.cantidad as cantidadBusqueda "
                 + "from producto join (select count(numero) as cantidad, idProd from busqueda "
                 + "group by idProd) sq on producto.idproducto=sq.idProd order by cantidad desc limit 15;";
 
@@ -140,6 +138,10 @@ public class ConexionSQL {
             while (rs.next()) {
                 Producto producto = new Producto();
                 producto.setNombre(rs.getString("nombre"));
+                producto.setCategoria(new Categoria(rs.getString("categoria")));
+                producto.setCalificacion(new Calificacion(rs.getInt("calificacion")));
+                producto.setVendedor(ConexionSQL.getVendedorByID(rs.getString("vendedor")));
+                producto.setTiempoMaxEntrega(rs.getString("tiempoMaxEntrega"));
                 producto.setPrecio(rs.getDouble("costo"));
                 list.add(producto);
             }
@@ -148,47 +150,24 @@ public class ConexionSQL {
         }
         return list;
     }
-/*
-    static public ObservableList<Producto> ProductosMasBuscadosQuemado() {
 
-        ObservableList<Producto> list = FXCollections.observableArrayList();
-
-        Producto p1 = new Producto();
-        p1.setNombre("Camiseta");
-        p1.setCategoria(null);
-
-        Producto p2 = new Producto();
-        p2.setNombre("Pantaloneta");
-        p2.setCategoria(null);
-
-        list.add(p1);
-        list.add(p2);
-
-        return list;
-
-    }
-*/
     static public List<Producto> BuscarProductos(String palabras) {
-        System.out.println("palabras   "+palabras);
         List<Producto> list = FXCollections.observableArrayList();
         try {
 
-              String SQL = "select nombre, categoria, costo, tiempoMaxEntrega, "
+            String SQL = "select nombre, categoria, costo, tiempoMaxEntrega, "
                     + "calificacion, vendedor from producto where (nombre like '%" + palabras + "%' "
                     + "or categoria like '%" + palabras + "%') and eliminado=false;";
-            
+
             ResultSet rs = ConexionSQL.getConnection().createStatement().executeQuery(SQL);
             while (rs.next()) {
-                System.out.println("RRKFF"+rs.toString());
                 Producto producto = new Producto();
                 producto.setNombre(rs.getString("nombre"));
                 producto.setCategoria(new Categoria(rs.getString("categoria")));
                 producto.setPrecio(rs.getDouble("costo"));
-               
                 producto.setTiempoMaxEntrega(rs.getString("tiempoMaxEntrega"));
                 producto.setCalificacion(new Calificacion(rs.getInt("calificacion")));
-                System.out.println("VENDEDOROROROR"+rs.getString("vendedor"));
-                producto.setVendedor(new Vendedor(rs.getString("vendedor")));
+                producto.setVendedor(ConexionSQL.getVendedorByID(rs.getString("vendedor")));
                 list.add(producto);
             }
 
@@ -280,4 +259,105 @@ public class ConexionSQL {
         }
         return i;
     }
+
+    static public Vendedor getVendedorByID(String id) {
+        Vendedor v = new Vendedor();
+        try {
+            String query = "{call getVendedor(?,?,?,?,?,?,?,?,?)}";
+            ResultSet rs;
+            Connection conn = ConexionSQL.getConnection();
+            CallableStatement stmt = conn.prepareCall(query);
+            //Set IN parameter
+            stmt.setString(1, id);
+            stmt.registerOutParameter(2, Types.VARCHAR);
+            stmt.registerOutParameter(3, Types.VARCHAR);
+            stmt.registerOutParameter(4, Types.VARCHAR);
+            stmt.registerOutParameter(5, Types.VARCHAR);
+            stmt.registerOutParameter(6, Types.VARCHAR);
+            stmt.registerOutParameter(7, Types.VARCHAR);
+            stmt.registerOutParameter(8, Types.DOUBLE);
+            stmt.registerOutParameter(9, Types.VARCHAR);
+            rs = stmt.executeQuery();
+            String nombres = stmt.getString("nombresin");
+            String apellidos = stmt.getString("apellidosin");
+            String numero = stmt.getString("numeroin");
+            String correo = stmt.getString("correoin");
+            String direccion = stmt.getString("direccionin");
+            String matricula = stmt.getString("matriculain");
+            Double saldo = stmt.getDouble("saldoin");
+            String usuario = stmt.getString("usuarioin");
+            v.setNombres(nombres);
+            v.setApellidos(apellidos);
+            v.setCedula(id);
+            v.setDireccion(direccion);
+            v.setEmail(correo);
+            v.setMatricula(matricula);
+            v.setTelefono(numero);
+            v.setUsuario(usuario);
+            //Sañadir saldo a usuario
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return v;
+    }
+
+    static public ObservableList<Venta> PedidosPendientes() {
+        ObservableList<Venta> list = FXCollections.observableArrayList();
+        String query = "{call getPedidosPendientes()}";
+        try {
+            ResultSet rs = ConexionSQL.getConnection().createStatement().executeQuery(query);
+            while (rs.next()) {
+                Venta venta=new Venta();
+                Producto p=ConexionSQL.getProductoByID(rs.getString("producto"));
+                venta.setComprador(ConexionSQL.getVendedorByID(rs.getString("comprador")));
+                venta.setProducto(p);
+                venta.setCantidad(rs.getInt("cantidad"));
+                
+                list.add(venta);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ConexionSQL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+    
+    
+    
+    static public Producto getProductoByID(String id) {
+        Producto p=new Producto();
+        try {
+            String query = "{call getProducto(?,?,?,?,?,?)}";
+            ResultSet rs;
+            
+            Connection conn = ConexionSQL.getConnection();
+            CallableStatement stmt = conn.prepareCall(query);
+            //Set IN parameter
+            stmt.setString(1, id);
+            stmt.registerOutParameter(2, Types.VARCHAR);
+            stmt.registerOutParameter(3, Types.INTEGER);
+            stmt.registerOutParameter(4, Types.VARCHAR);
+            stmt.registerOutParameter(5, Types.DOUBLE);
+            stmt.registerOutParameter(6, Types.INTEGER);
+           
+            rs = stmt.executeQuery();
+            String nombres = stmt.getString("nombrein");
+            int tiempo = stmt.getInt("tiempoin");
+            String categoria = stmt.getString("categoriain");
+            double costo = stmt.getDouble("costoin");
+            int disponible= stmt.getInt("disponiblein");
+            p.setNombre(nombres);
+            p.setCategoria(new Categoria(categoria));
+            p.setPrecio(costo);
+            p.setTiempoMaxEntrega(String.valueOf(tiempo));
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return p;
+    }
+
+    
+    
 }

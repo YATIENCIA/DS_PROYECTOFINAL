@@ -111,13 +111,13 @@ deberá permitir comprar dicho artículo./*
         for (Producto p : lista) {
             HBox producto = new HBox();
             VBox infoProducto = new VBox();
-            Label nombre = new Label("Nombre del producto " + p.getNombre());
-            Label cat = new Label("Categoría del producto " + p.getCategoria());
-            Label precio = new Label("Precio del producto " + p.getPrecio());
-            Label tmaxentr = new Label("Tiempo máximo de entrega del producto " + p.getTiempoMaxEntrega());
-            Label calpro = new Label("Calificación del producto " + p.getCalificacion());
-            Label calven = new Label("Vendedor  " + p.getVendedor());
-            Button comprar = new Button("Comprar producto ");
+            Label nombre = new Label("Nombre del producto: " + p.getNombre());
+            Label cat = new Label("Categoría del producto: " + p.getCategoria());
+            Label precio = new Label("Precio del producto: " + p.getPrecio());
+            Label tmaxentr = new Label("Tiempo máximo de entrega del producto: " + p.getTiempoMaxEntrega());
+            Label calpro = new Label("Calificación del producto: " + p.getCalificacion());
+            Label calven = new Label("Vendedor:  " + p.getVendedor());
+            Button comprar = new Button("Comprar producto: ");
             infoProducto.setAlignment(Pos.CENTER);
             infoProducto.getChildren().addAll(nombre, cat, precio, tmaxentr, calpro, calven);
             producto.getChildren().addAll(infoProducto, comprar);
@@ -176,32 +176,9 @@ deberá permitir comprar dicho artículo./*
     public void CrearComprasPendientes() {
         VBox v = new VBox();
 
-        ObservableList<Venta> list = FXCollections.observableArrayList();
+        ObservableList<Venta> list = ConexionSQL.PedidosPendientes();
 
-        String query = "{call  historialComprasEstado(?,?)}";
-        ResultSet rs;
-        String cedula = SistemaPoliVentas.usuario.getCedula();
-
-        try (Connection conn = ConexionSQL.getConnection();
-                CallableStatement stmt = conn.prepareCall(query)) {
-            //Set IN parameter
-            stmt.setString(1, cedula);
-            stmt.setString(2, "PENDIENTE");
-            rs = stmt.executeQuery();
-            while (rs.next()) {
-                Venta venta = new Venta();
-                venta.setCantidad(rs.getInt("cantidad"));
-                Producto p = new Producto();
-                p.setNombre(rs.getString("nombre"));
-                p.setPrecio(rs.getDouble("costo"));
-                p.setCategoria(new Categoria("categoria"));
-                venta.setProducto(p);
-                list.add(venta);
-            }
-
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
+        
 
         TableView<Venta> table = Tablas.CrearVentasDescFecha(list);
 

@@ -4,6 +4,12 @@
  * and open the template in the editor.
  */
 package diseñosoftware.vistas;
+import controladores.SistemaPoliVentas;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,6 +19,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -25,8 +32,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import modelos.ConexionSQL;
 import modelos.Producto;
 import modelos.Usuario;
+import modelos.Vendedor;
 import modelos.Venta;
 import recursos.constantes;
 /**
@@ -37,7 +46,8 @@ public class VendedorVista extends CompradorVista{
    // Pane menuV=new Pane();
     BorderPane VentasPendientes=new BorderPane();
     BorderPane MisProductos=new BorderPane();
-    
+    Tab tab_vp = new Tab("Ventas pendientes");
+    Tab tab_mp = new Tab("Mis productos");
     
     public VendedorVista(int tamañoVentana, String titulo) {
         super(tamañoVentana, titulo);
@@ -48,8 +58,7 @@ public class VendedorVista extends CompradorVista{
     public void CreateScene()
     {
         super.CreateScene();
-        Tab tab_vp = new Tab("Ventas pendientes");
-        Tab tab_mp = new Tab("Mis productos");
+        
         tabPane.getTabs().addAll(tab_vp, tab_mp);
         CrearVentasPendientes();
         CrearMisProductos();
@@ -57,8 +66,8 @@ public class VendedorVista extends CompradorVista{
         tab_vp.setContent(VentasPendientes);
         tab_mp.setContent(MisProductos);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-
-       // menuC.getChildren().add(tabPane);  
+        PresentarNotificaciones();
+        tab_vp.setOnSelectionChanged(e->EliminarNotificaciones());
     }
     
        public void CrearMisProductos()
@@ -105,9 +114,7 @@ public class VendedorVista extends CompradorVista{
        public void CrearVentasPendientes(){
         VBox v=new VBox();
 
-        ObservableList<Venta> list = FXCollections.observableArrayList
-        (new Venta(),
-            new Venta());
+        ObservableList<Venta> list = ConexionSQL.PedidosPendientes();
         TableView<Venta> table = Tablas.CrearVentasDescFecha(list);
        
         ContextMenu cm = new ContextMenu();
@@ -153,4 +160,37 @@ public class VendedorVista extends CompradorVista{
         
        return EH;
 }
+    
+    public int getNotificaciones()
+    {
+        int i=0;
+        try {
+            String query = "{call getNotificacion(?,?)}";
+            ResultSet rs;
+            Connection conn = ConexionSQL.getConnection();
+            CallableStatement stmt = conn.prepareCall(query);
+            //Set IN parameter
+            stmt.setString(1, SistemaPoliVentas.usuario.getCedula());
+            stmt.registerOutParameter(2, Types.INTEGER);
+            rs = stmt.executeQuery();
+            i = stmt.getInt("cantidadout");
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return i;
+    }
+    
+    public void PresentarNotificaciones()
+    {
+        int i=getNotificaciones();
+        String not=String.valueOf(i);
+        tab_vp.setText("Ventas pendientes "+not);
+    }
+    
+    public void EliminarNotificaciones()
+    {
+        tab_vp.setText("Ventas pendientes");
+        Vendedor v=(Vendedor) SistemaPoliVentas.usuario;
+        Venta.EliminarNotVendedor(v);
+    }
 }
