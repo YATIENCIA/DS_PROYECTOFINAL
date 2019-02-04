@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/Isabel%20Atiencia/Documents/DSSSSS/DS_PROYECTOFINAL/DSoftware/src/modelos/Producto.java</file>
             <file>file:/C:/Users/Isabel%20Atiencia/Documents/DSSSSS/DS_PROYECTOFINAL/DSoftware/src/modelos/Venta.java</file>
             <file>file:/C:/Users/Isabel%20Atiencia/Documents/DSSSSS/DS_PROYECTOFINAL/DSoftware/src/diseñosoftware/vistas/ProductosMasBuscadosVista.java</file>
@@ -16,6 +17,16 @@
             <file>file:/C:/Users/Isabel%20Atiencia/Documents/DSSSSS/DS_PROYECTOFINAL/DSoftware/src/diseñosoftware/vistas/Tablas.java</file>
             <file>file:/C:/Users/Isabel%20Atiencia/Documents/DSSSSS/DS_PROYECTOFINAL/DSoftware/src/modelos/ConexionSQL.java</file>
             <file>file:/C:/Users/Isabel%20Atiencia/Documents/DSSSSS/DS_PROYECTOFINAL/DSoftware/src/controladores/SistemaPoliVentas.java</file>
+=======
+            <file>file:/E:/Miguel%20Angel/Desktop/ESPOL/2018%20II/DISENO%20SOFT/clone/DS_PROYECTOFINAL/DSoftware/src/controladores/SistemaPoliVentas.java</file>
+            <file>file:/E:/Miguel%20Angel/Desktop/ESPOL/2018%20II/DISENO%20SOFT/clone/DS_PROYECTOFINAL/DSoftware/src/modelos/ConexionSQL.java</file>
+            <file>file:/E:/Miguel%20Angel/Desktop/ESPOL/2018%20II/DISENO%20SOFT/clone/DS_PROYECTOFINAL/DSoftware/src/modelos/Producto.java</file>
+            <file>file:/E:/Miguel%20Angel/Desktop/ESPOL/2018%20II/DISENO%20SOFT/clone/DS_PROYECTOFINAL/DSoftware/src/controladores/AdministradorControlador.java</file>
+            <file>file:/E:/Miguel%20Angel/Desktop/ESPOL/2018%20II/DISENO%20SOFT/clone/DS_PROYECTOFINAL/DSoftware/src/diseñosoftware/vistas/AdministradorVista.java</file>
+            <file>file:/E:/Miguel%20Angel/Desktop/ESPOL/2018%20II/DISENO%20SOFT/clone/DS_PROYECTOFINAL/DSoftware/src/modelos/Usuario.java</file>
+            <file>file:/E:/Miguel%20Angel/Desktop/ESPOL/2018%20II/DISENO%20SOFT/clone/DS_PROYECTOFINAL/DSoftware/src/diseñosoftware/vistas/NuevoUsuario.java</file>
+            <file>file:/E:/Miguel%20Angel/Desktop/ESPOL/2018%20II/DISENO%20SOFT/clone/DS_PROYECTOFINAL/DSoftware/src/modelos/Vendedor.java</file>
+>>>>>>> 6d2290fb4e5c4282009b6724161ebf416daae492
         </group>
     </open-files>
 </project-private>

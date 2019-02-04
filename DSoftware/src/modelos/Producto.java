@@ -24,16 +24,18 @@ public class Producto {
     private String TiempoMaxEntrega;
     private Calificacion calificacion;
     private Vendedor vendedor;
-
+    private int cantidad_disponible;
+    
     public Producto(){}
     
-    public Producto(String nombre, Categoria categoria, double precio, String TiempoMaxEntrega, Calificacion calificacion, Vendedor vendedor) {
+    public Producto(String nombre, Categoria categoria, double precio, String TiempoMaxEntrega, Calificacion calificacion, Vendedor vendedor, int cantidad) {
         this.nombre = nombre;
         this.categoria = categoria;
         this.precio = precio;
         this.TiempoMaxEntrega = TiempoMaxEntrega;
         this.calificacion = calificacion;
         this.vendedor = vendedor;
+        this.cantidad_disponible = cantidad;
     }
 
     public boolean equals(Producto producto) {
@@ -114,4 +116,16 @@ public class Producto {
     public String toString() {
         return nombre;
     }
+
+    public int getCantidad_disponible() {
+        return cantidad_disponible;
+    }
+
+    public void setCantidad_disponible(int cantidad_disponible) {
+        this.cantidad_disponible = cantidad_disponible;
+    }
+    
+    
+    
+    
 }

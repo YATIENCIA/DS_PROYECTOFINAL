@@ -112,7 +112,7 @@ public class SistemaPoliVentas {
             }
         }
         usuario.setUsuario(usu);
-        usuario.setContraseña(contraseña);
+        usuario.setContrasena(contraseña);
         usuario=getByUsuario(usuario);
         return usuario;
     }

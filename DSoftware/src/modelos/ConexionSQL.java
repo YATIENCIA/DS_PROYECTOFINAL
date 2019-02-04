@@ -26,7 +26,7 @@ public class ConexionSQL {
 
     public static void ConexionSQL() {
         try {
-            cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/poliventas", "root", "123456789");
+            cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/poliventas", "root", "vegeta10");
             System.out.println("Conexión exitosa!");
         } catch (SQLException ex) {
             System.out.print(ex.getMessage());
@@ -36,7 +36,7 @@ public class ConexionSQL {
     public static Connection getConnection() {
         try {
             if (cn.isClosed()) {
-                cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/poliventas", "root", "123456789");
+                cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/poliventas", "root", "vegeta10");
 
             }
         } catch (SQLException ex) {
@@ -211,7 +211,7 @@ public class ConexionSQL {
                 Usuario usuario = new Usuario();
                 usuario.setCedula(rs.getString("cedula"));
                 usuario.setUsuario(rs.getString("usuario"));
-                usuario.setContraseña(rs.getString("contraseña"));
+                usuario.setContrasena(rs.getString("contraseña"));
                 usuario.setTipo(rs.getString("rol"));
                 list.add(usuario);
             }
@@ -260,6 +260,7 @@ public class ConexionSQL {
         return i;
     }
 
+
     static public Vendedor getVendedorByID(String id) {
         Vendedor v = new Vendedor();
         try {
@@ -295,11 +296,32 @@ public class ConexionSQL {
             v.setTelefono(numero);
             v.setUsuario(usuario);
             //Sañadir saldo a usuario
+              } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return v;
+    }
+    
+    public static void ModificarPersonaEnLaBase(String usuario, String contraseña, String nombres, String apellidos, String telefono, String email, String direccion, String cedula, String matricula, boolean whatsapp) {
+        String query = "{call modificarUsuario(?,?,?,?,?,?,?,?)}";
+        ResultSet rs;
+        try (Connection conn = ConexionSQL.getConnection();
+                CallableStatement stmt = conn.prepareCall(query)) {
+            //Set IN parameter
+            stmt.setString(1, cedula);
+            stmt.setString(2, nombres);
+            stmt.setString(3, apellidos);
+            stmt.setString(4, telefono);
+            stmt.setString(5, email);
+            stmt.setString(6, direccion);
+            stmt.setString(7, matricula);
+            stmt.setString(8, usuario);
+            rs = stmt.executeQuery();
+
 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        return v;
     }
 
     static public ObservableList<Venta> PedidosPendientes() {
@@ -358,6 +380,5 @@ public class ConexionSQL {
         return p;
     }
 
-    
     
 }

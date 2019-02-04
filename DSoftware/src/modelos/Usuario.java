@@ -17,7 +17,7 @@ import java.sql.Types;
  */
 public class Usuario {
     protected String usuario;
-    protected String contraseña;
+    protected String contrasena;
     protected String nombres;
     protected String apellidos;
     protected String telefono;
@@ -38,7 +38,7 @@ public class Usuario {
 
     public Usuario(String usuario, String contraseña, String nombres, String apellidos, String telefono, String email, String direccion, String cedula, String matricula, boolean whatsapp) {
         this.usuario = usuario;
-        this.contraseña = contraseña;
+        this.contrasena = contraseña;
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.telefono = telefono;
@@ -63,8 +63,8 @@ public class Usuario {
         
     }
 
-    public String getContraseña() {
-        return contraseña;
+    public String getContrasena() {
+        return contrasena;
     }
 
     public String getNombres() {
@@ -103,8 +103,8 @@ public class Usuario {
         this.usuario = usuario;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setContrasena(String contraseña) {
+        this.contrasena = contraseña;
     }
 
     public void setNombres(String nombres) {
@@ -141,7 +141,7 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return nombres;
+        return "Usuario{" + "usuario=" + usuario + ", contrase\u00f1a=" + contrasena + ", nombres=" + nombres + ", apellidos=" + apellidos + ", telefono=" + telefono + ", email=" + email + ", direccion=" + direccion + ", cedula=" + cedula + ", matricula=" + matricula + ", whatsapp=" + whatsapp + ", tipo=" + tipo + '}';
     }
     
     

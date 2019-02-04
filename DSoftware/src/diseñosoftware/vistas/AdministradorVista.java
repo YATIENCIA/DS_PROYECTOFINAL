@@ -6,6 +6,7 @@
 package diseñosoftware.vistas;
 
 
+import Helpers.Helper;
 import controladores.AdministradorControlador;
 import static diseñosoftware.vistas.Vista.NotificacionEliminarProducto;
 import static diseñosoftware.vistas.Vista.NotificacionEliminarUsuario;
@@ -16,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ContextMenu;
@@ -33,6 +35,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modelos.ConexionSQL;
 import modelos.Producto;
@@ -48,6 +51,8 @@ public class AdministradorVista extends Vista {
     BorderPane AdminUsu = new BorderPane();
     BorderPane AdminProductos = new BorderPane();
     AdministradorControlador controlador;
+    Stage stageDialog;
+    Alert alert;
 
     public AdministradorVista(int tamañoVentana, String titulo) {
         super(tamañoVentana, titulo);
@@ -177,7 +182,9 @@ public class AdministradorVista extends Vista {
     
     
     public void bmodificarUsuario(Usuario usuario){
-        Stage stageDialog = new Stage();
+        System.out.println(usuario.getUsuario());
+        stageDialog = new Stage();
+        stageDialog.initModality(Modality.APPLICATION_MODAL);
          //crear el stageDialog para la ventana de dialogo
         stageDialog.setTitle("Modificar USUARIO");
         //decirle al stageDialog que se comporte como un pop-up (Modal)
@@ -190,13 +197,14 @@ public class AdministradorVista extends Vista {
 
         grid.add(aceptar,0,4);
         
-        Scene scene2 = new Scene(grid,250,250);
-        
+        Scene scene2 = new Scene(grid,550,550);
+        stageDialog.setResizable(false);
         stageDialog.setScene(scene2);
         
         modificarUsuarioVista(usuario,scene2);
         // Mostrar el dialogo y esperar hasta que el usuario cierra la venta
         stageDialog.showAndWait();
+        
         
        
         
@@ -220,20 +228,37 @@ public class AdministradorVista extends Vista {
         grid.add(new Label("Matricula:"), 1, 9);
         //grid.add(new Label("Perfil:"), 1, 10);
         
+        
         TextField c_nombre = new TextField();
+        c_nombre.setPromptText(user.getNombres());
         TextField c_apellido = new TextField();
+        c_apellido.setPromptText(user.getApellidos());
         TextField c_usuario = new TextField();
-        TextField c_contraseña = new TextField();
+        c_usuario.setPromptText(user.getUsuario());
+        TextField c_contrasena = new TextField();
+        c_contrasena.setPromptText(user.getContrasena());
+        //c_contrasena.setText(user.getContrasena());
+        //c_contrasena.setDisable(true);
         TextField c_cedula = new TextField();
+        c_cedula.setText(user.getCedula());
+        c_cedula.setDisable(true);
+        c_cedula.setPromptText(user.getCedula());
         TextField c_telefono = new TextField();
+        c_telefono.setPromptText(user.getTelefono());
         TextField c_email = new TextField();
+        c_email.setPromptText(user.getEmail());
         TextField c_direccion = new TextField();
+        c_direccion.setPromptText(user.getDireccion());
         TextField c_mat = new TextField();
+        c_mat.setPromptText(user.getMatricula());
+        //c_mat.setDisable(true);
+        
+        
         
         grid.add(c_nombre, 4, 0);
         grid.add(c_apellido, 4, 1);
         grid.add(c_usuario, 4, 2);
-        grid.add(c_contraseña, 4, 3);
+        grid.add(c_contrasena, 4, 3);
         grid.add(c_cedula, 4, 4);
         grid.add(c_telefono, 4, 5);
         grid.add(c_email, 4, 6);
@@ -241,12 +266,44 @@ public class AdministradorVista extends Vista {
         grid.add(c_mat, 4, 9);
 
         grid.add(modificar, 1, 10);
-
+        grid.setVgap(10);
+        grid.setAlignment(Pos.CENTER);
+        
+        
+        
         modificar.setOnAction(e-> {
+            if(Helper.VerificacionDatosIngresados(c_usuario.getText(),c_contrasena.getText(),c_nombre.getText(),c_apellido.getText(),c_telefono.getText(),c_email.getText(),c_direccion.getText(),c_cedula.getText(),c_mat.getText())){
+                
+                ConexionSQL.ModificarPersonaEnLaBase(c_usuario.getText(),c_contrasena.getText(),c_nombre.getText(),c_apellido.getText(),c_telefono.getText(),c_email.getText(),c_direccion.getText(),c_cedula.getText(),c_mat.getText(),false);
+                System.out.println("procedure de actualizacion");
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Usuario modificado");
+                alert.setHeaderText(null);
+                alert.setContentText("Los datos del usuario han sido modificados con exito");
+
+                alert.showAndWait();
+                stageDialog.close();
+                
+                
+                
+                
+                
+            }else{
+            
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Campos vacios");
+                alert.setContentText("Por favor ingrese datos en todos los campos para la actualizacion del usuario");
+
+                alert.showAndWait();
+            
+            }
+            //System.out.println(c_contrasena.getText());
+            //ConexionSQL.ModificarPersonaALaBase(c_usuario.getText(),c_contraseña.getText(),c_nombre.getText(),c_apellido.getText(),c_telefono.getText(),c_email.getText(),c_direccion.getText(),c_cedula.getText(),c_mat.getText(),false);
             String tnombres= c_nombre.getText();
             String tapellidos=c_apellido.getText();
             String tusuario=c_usuario.getText();
-            String tcontraseña=c_contraseña.getText();
+            String tcontraseña=c_contrasena.getText();
             String tcedula=c_cedula.getText();
             String ttelefono=c_telefono.getText();
             String temail=c_email.getText();
@@ -262,10 +319,12 @@ public class AdministradorVista extends Vista {
     }
 
     public void bModificarProducto(Producto producto){
-        Stage stageDialog = new Stage();
+        stageDialog = new Stage();
+        //decirle al stageDialog que se comporte como un pop-up (Modal)
+        stageDialog.initModality(Modality.APPLICATION_MODAL);
          //crear el stageDialog para la ventana de dialogo
         stageDialog.setTitle("MODIFICAR PRODUCTO");
-        //decirle al stageDialog que se comporte como un pop-up (Modal)
+        
         //stageDialog.initModality(Modality.WINDOW_MODAL);
         
         GridPane grid= new GridPane();
@@ -274,15 +333,20 @@ public class AdministradorVista extends Vista {
         Label lPecioProducto = new Label("Precio");
                
         TextField tNombreProducto= new TextField();
+        tNombreProducto.setPromptText(producto.getNombre());
         TextField tDescripcionProducto= new TextField();
         TextField tPrecioProducto= new TextField();
+        tPrecioProducto.setPromptText(String.valueOf(producto.getPrecio()));
         
         Label ltiempoMaxEntrega= new Label("Tiempo maximo de entrega");
         Label lCategoria= new Label("Categoria");
         Label lCantidadDisponible= new Label("Cantidad disponible");
         TextField ttiempoMaxEntrega= new TextField();
+        ttiempoMaxEntrega.setPromptText(producto.getTiempoMaxEntrega());
         TextField tCategoria= new TextField();
+        tCategoria.setPromptText(producto.getCategoria().getNombre());
         TextField tCantidadDisponible= new TextField();
+        tCantidadDisponible.setPromptText(String.valueOf(producto.getCantidad_disponible()));
         
         grid.add(lNombreProducto, 0, 0);
         grid.add(lDescripcionProducto, 0, 1);
@@ -297,9 +361,33 @@ public class AdministradorVista extends Vista {
         grid.add(ttiempoMaxEntrega,1,3);
         grid.add(tCategoria,1,4);
         grid.add(tCantidadDisponible,1,5);
+        grid.setVgap(10);
+        grid.setAlignment(Pos.CENTER);
         
-        Button aceptar = new Button("ACEPTAR");
-        aceptar.setOnAction(e->{
+        Button modificar = new Button("Modificar");
+        modificar.setOnAction(e->{
+            
+            if(Helper.VerificacionDatosIngresados(tNombreProducto.getText(),tDescripcionProducto.getText(),tPrecioProducto.getText(),ttiempoMaxEntrega.getText(),tCategoria.getText(),tCantidadDisponible.getText())){
+                
+                //ConexionSQL.ModificarPersonaEnLaBase(c_usuario.getText(),c_contrasena.getText(),c_nombre.getText(),c_apellido.getText(),c_telefono.getText(),c_email.getText(),c_direccion.getText(),c_cedula.getText(),c_mat.getText(),false);
+                System.out.println("procedure de actualizacion");
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Usuario modificado");
+                alert.setHeaderText(null);
+                alert.setContentText("Los datos del producto han sido modificados con exito");
+                alert.showAndWait();
+                stageDialog.close();
+            }else{
+            
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Campos vacios");
+                alert.setContentText("Por favor ingrese datos en todos los campos para la actualizacion del usuario");
+
+                alert.showAndWait();
+            
+            }
+            
             String nombre= tNombreProducto.getText();
             String descripcion=tDescripcionProducto.getText();
             String precio=tPrecioProducto.getText();
@@ -313,13 +401,13 @@ public class AdministradorVista extends Vista {
             controlador.modificarProducto(producto, info);
             
                 });
-
-        grid.add(aceptar,0,6);
         
-        Scene scene2 = new Scene(grid,250,250);
-
+        grid.add(modificar,0,6);
+        
+        Scene scene2 = new Scene(grid,550,550);
+        stageDialog.setResizable(false);
         stageDialog.setScene(scene2);
-                
+        
         // Mostrar el dialogo y esperar hasta que el usuario cierra la venta
         stageDialog.showAndWait();
         
@@ -387,5 +475,10 @@ public class AdministradorVista extends Vista {
         // Mostrar el dialogo y esperar hasta que el usuario cierra la venta
         stageDialog.showAndWait();
     }
+    
+   
+    
+    
+    
     
 }
