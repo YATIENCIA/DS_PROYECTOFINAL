@@ -336,7 +336,7 @@ public class AdministradorVista extends Vista {
         tNombreProducto.setPromptText(producto.getNombre());
         TextField tDescripcionProducto= new TextField();
         TextField tPrecioProducto= new TextField();
-        tPrecioProducto.setPromptText(String.valueOf(producto.getPrecio()));
+        tPrecioProducto.setPromptText(String.valueOf(producto.getPrecio())+" (entero.decimal)");
         
         Label ltiempoMaxEntrega= new Label("Tiempo maximo de entrega");
         Label lCategoria= new Label("Categoria");
